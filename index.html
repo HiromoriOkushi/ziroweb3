@@ -73,9 +73,9 @@
         </section>
 
         <!-- Section 2: Why Everything Fails -->
-        <section id="why" class="py-16 md:py-24">
+        <section id="why" class="section-with-sticky py-16 md:py-24">
             <div class="container mx-auto px-6">
-                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 scroll-reveal">
+                <div class="sticky-header text-center max-w-3xl mx-auto scroll-reveal">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Your Tools Are 40-Year-Old Architecture With AI Duct-Taped On</h2>
                 </div>
                 <div class="max-w-4xl mx-auto">
@@ -94,7 +94,7 @@
                 </div>
                 <div class="scroll-stack-end"></div>
                 <div class="pt-24">
-                    <p class="text-center text-accent font-semibold mt-12 md:mt-16 scroll-reveal">None of them make the document itself the context window. Ziro does.</p>
+                    <p class="text-center text-accent font-semibold scroll-reveal">None of them make the document itself the context window. Ziro does.</p>
                 </div>
             </div>
         </section>
@@ -166,108 +166,116 @@
         </section>
 
         <!-- Section 5: Built For High-Stakes Work -->
-        <section id="use-cases" class="py-16 md:py-24">
-            <div class="container mx-auto px-6 scroll-reveal">
-                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+        <section id="use-cases" class="section-with-sticky py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="sticky-header text-center max-w-3xl mx-auto scroll-reveal">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Trust Through Transparency</h2>
                 </div>
-                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <div class="card p-8">
-                        <h3 class="font-bold text-lg mb-2">Investment Analysts</h3>
-                        <p class="text-text-secondary">Your models need audit trails. Ziro tracks every AI suggestion and every human decision, creating a complete record of how your analysis was built.</p>
+                <div class="scroll-reveal">
+                    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12 md:mb-16">
+                        <div class="card p-8">
+                            <h3 class="font-bold text-lg mb-2">Investment Analysts</h3>
+                            <p class="text-text-secondary">Your models need audit trails. Ziro tracks every AI suggestion and every human decision, creating a complete record of how your analysis was built.</p>
+                        </div>
+                        <div class="card p-8">
+                            <h3 class="font-bold text-lg mb-2">Legal & Compliance Teams</h3>
+                            <p class="text-text-secondary">When your work faces regulatory scrutiny, you need provenance. See the AI's plan, review its sources, track every change like Git for documents.</p>
+                        </div>
+                        <div class="card p-8">
+                            <h3 class="font-bold text-lg mb-2">Research Teams</h3>
+                            <p class="text-text-secondary">Your papers require reproducibility. Ziro doesn't just store the output—it stores the data sources, AI suggestions, and human decisions that created it.</p>
+                        </div>
                     </div>
-                    <div class="card p-8">
-                        <h3 class="font-bold text-lg mb-2">Legal & Compliance Teams</h3>
-                        <p class="text-text-secondary">When your work faces regulatory scrutiny, you need provenance. See the AI's plan, review its sources, track every change like Git for documents.</p>
-                    </div>
-                    <div class="card p-8">
-                        <h3 class="font-bold text-lg mb-2">Research Teams</h3>
-                        <p class="text-text-secondary">Your papers require reproducibility. Ziro doesn't just store the output—it stores the data sources, AI suggestions, and human decisions that created it.</p>
-                    </div>
+                    <p class="text-center text-text-secondary text-lg">A system of record for auditable human-AI collaboration.</p>
                 </div>
-                <p class="text-center text-text-secondary mt-12 md:mt-16 text-lg">A system of record for auditable human-AI collaboration.</p>
             </div>
         </section>
 
         <!-- Section 6: The Technical Difference -->
-        <section id="tech" class="py-16 md:py-24">
-            <div class="container mx-auto px-6 scroll-reveal">
-                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+        <section id="tech" class="section-with-sticky py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="sticky-header text-center max-w-3xl mx-auto scroll-reveal">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Why Competitors Can't Catch Us</h2>
                 </div>
-                <div class="max-w-4xl mx-auto space-y-10">
-                    <div>
-                        <h3 class="font-bold text-accent tracking-widest mb-2">VISIBLE AGENTIC WORKFLOW</h3>
-                        <p class="text-text-secondary">You see the AI's "plan of attack"—a visual map of specialized agents working together. A Data Analyst Agent hands off to a Chart Generation Agent. Fully transparent. Fully auditable.</p>
+                <div class="scroll-reveal">
+                    <div class="max-w-4xl mx-auto space-y-10 mb-12 md:mb-16">
+                        <div>
+                            <h3 class="font-bold text-accent tracking-widest mb-2">VISIBLE AGENTIC WORKFLOW</h3>
+                            <p class="text-text-secondary">You see the AI's "plan of attack"—a visual map of specialized agents working together. A Data Analyst Agent hands off to a Chart Generation Agent. Fully transparent. Fully auditable.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-accent tracking-widest mb-2">COMPLETE VERSION CONTROL</h3>
+                            <p class="text-text-secondary">Git for documents. Every change from you and the AI is tracked. View the "diff" between the AI's suggestion and your final edit. Nothing is ever lost.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-accent tracking-widest mb-2">SELF-IMPROVING, PERSONALIZED AI</h3>
+                            <p class="text-text-secondary">The edit deltas become training data. Accept a change? Positive signal. Adjust it? The AI learns the correction. This creates a hyper-personalized partner that compounds over time.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-accent tracking-widest mb-2">COMPLETE VERSION CONTROL</h3>
-                        <p class="text-text-secondary">Git for documents. Every change from you and the AI is tracked. View the "diff" between the AI's suggestion and your final edit. Nothing is ever lost.</p>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-accent tracking-widest mb-2">SELF-IMPROVING, PERSONALIZED AI</h3>
-                        <p class="text-text-secondary">The edit deltas become training data. Accept a change? Positive signal. Adjust it? The AI learns the correction. This creates a hyper-personalized partner that compounds over time.</p>
-                    </div>
+                    <p class="text-center text-text-secondary max-w-3xl mx-auto">You can copy our tech stack in 6 months. You can't copy 10,000 users' worth of personalized edit history training their own AI models.</p>
                 </div>
-                <p class="text-center text-text-secondary mt-12 md:mt-16 max-w-3xl mx-auto">You can copy our tech stack in 6 months. You can't copy 10,000 users' worth of personalized edit history training their own AI models.</p>
             </div>
         </section>
 
         <!-- Section 7: The Roadmap -->
-        <section id="roadmap" class="py-16 md:py-24">
-            <div class="container mx-auto px-6 scroll-reveal">
-                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+        <section id="roadmap" class="section-with-sticky py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="sticky-header text-center max-w-3xl mx-auto scroll-reveal">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Roadmap</h2>
                 </div>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="card p-8">
-                        <h3 class="font-bold text-lg mb-4 text-accent">Phase 1 <span class="text-text-secondary font-normal text-sm">(Now → Month 6)</span></h3>
-                        <ul class="list-disc list-inside space-y-2 text-text-secondary">
-                            <li>Document-as-context-window architecture</li>
-                            <li>Integrated version control system</li>
-                            <li>Real-time AI streaming to canvas</li>
-                            <li>100 design partners</li>
-                        </ul>
+                <div class="scroll-reveal">
+                    <div class="grid md:grid-cols-3 gap-8 mb-12 md:mb-16">
+                        <div class="card p-8">
+                            <h3 class="font-bold text-lg mb-4 text-accent">Phase 1 <span class="text-text-secondary font-normal text-sm">(Now → Month 6)</span></h3>
+                            <ul class="list-disc list-inside space-y-2 text-text-secondary">
+                                <li>Document-as-context-window architecture</li>
+                                <li>Integrated version control system</li>
+                                <li>Real-time AI streaming to canvas</li>
+                                <li>100 design partners</li>
+                            </ul>
+                        </div>
+                        <div class="card p-8">
+                            <h3 class="font-bold text-lg mb-4 text-accent">Phase 2 <span class="text-text-secondary font-normal text-sm">(Month 7-12)</span></h3>
+                            <ul class="list-disc list-inside space-y-2 text-text-secondary">
+                                <li>Full workspace: Write, Visualize, Code, Draw, Edit</li>
+                                <li>Visible agentic workflow UI</li>
+                                <li>Delta capture & RL training pipeline</li>
+                                <li>5,000 active users</li>
+                            </ul>
+                        </div>
+                        <div class="card p-8">
+                            <h3 class="font-bold text-lg mb-4 text-accent">Phase 3 <span class="text-text-secondary font-normal text-sm">(Month 13-18)</span></h3>
+                            <ul class="list-disc list-inside space-y-2 text-text-secondary">
+                                <li>Enterprise audit & compliance features</li>
+                                <li>Custom agent marketplace</li>
+                                <li>API ecosystem</li>
+                                <li>Category leadership</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="card p-8">
-                        <h3 class="font-bold text-lg mb-4 text-accent">Phase 2 <span class="text-text-secondary font-normal text-sm">(Month 7-12)</span></h3>
-                        <ul class="list-disc list-inside space-y-2 text-text-secondary">
-                            <li>Full workspace: Write, Visualize, Code, Draw, Edit</li>
-                            <li>Visible agentic workflow UI</li>
-                            <li>Delta capture & RL training pipeline</li>
-                            <li>5,000 active users</li>
-                        </ul>
-                    </div>
-                    <div class="card p-8">
-                        <h3 class="font-bold text-lg mb-4 text-accent">Phase 3 <span class="text-text-secondary font-normal text-sm">(Month 13-18)</span></h3>
-                        <ul class="list-disc list-inside space-y-2 text-text-secondary">
-                            <li>Enterprise audit & compliance features</li>
-                            <li>Custom agent marketplace</li>
-                            <li>API ecosystem</li>
-                            <li>Category leadership</li>
-                        </ul>
-                    </div>
+                    <p class="text-center text-text-secondary">We're in Phase 1, Month 2. Join the journey.</p>
                 </div>
-                <p class="text-center text-text-secondary mt-12 md:mt-16">We're in Phase 1, Month 2. Join the journey.</p>
             </div>
         </section>
 
         <!-- Section 8: The Team -->
-        <section id="team" class="py-16 md:py-24">
-            <div class="container mx-auto px-6 scroll-reveal">
-                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+        <section id="team" class="section-with-sticky py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="sticky-header text-center max-w-3xl mx-auto scroll-reveal">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">We're Not Theorizing. We're Building.</h2>
                 </div>
-                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <div class="card p-8 text-center">
-                        <h3 class="font-bold text-lg">Eaman Okumori Javid</h3>
-                        <p class="text-accent text-sm mb-4">CEO</p>
-                        <p class="text-text-secondary">MEng General Engineering, King's College London. Built quantitative finance models, regulatory frameworks, capital raising infrastructure. Domain expert in broken workflows.</p>
-                    </div>
-                    <div class="card p-8 text-center">
-                        <h3 class="font-bold text-lg">Zinelyes Amlik</h3>
-                        <p class="text-accent text-sm mb-4">CTO</p>
-                        <p class="text-text-secondary">MSc Computational Science, Imperial College London. Built RL systems, production ML pipelines, full-stack platforms. Makes the architecture real.</p>
+                <div class="scroll-reveal">
+                    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="card p-8 text-center">
+                            <h3 class="font-bold text-lg">Eaman Okumori Javid</h3>
+                            <p class="text-accent text-sm mb-4">CEO</p>
+                            <p class="text-text-secondary">MEng General Engineering, King's College London. Built quantitative finance models, regulatory frameworks, capital raising infrastructure. Domain expert in broken workflows.</p>
+                        </div>
+                        <div class="card p-8 text-center">
+                            <h3 class="font-bold text-lg">Zinelyes Amlik</h3>
+                            <p class="text-accent text-sm mb-4">CTO</p>
+                            <p class="text-text-secondary">MSc Computational Science, Imperial College London. Built RL systems, production ML pipelines, full-stack platforms. Makes the architecture real.</p>
+                        </div>
                     </div>
                 </div>
             </div>

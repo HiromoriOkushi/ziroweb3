@@ -13,7 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const lenis = initScrollStack();
+    // Initialize scroll stack with custom options
+    const lenis = initScrollStack({
+        itemDistance: 30,
+        itemScale: 0.03,
+        itemStackDistance: 30,
+        stackPosition: '20%',
+        scaleEndPosition: '10%',
+        baseScale: 0.85,
+        rotationAmount: 0,  // Set to 1-2 for subtle rotation effect
+        blurAmount: 0,      // Set to 2-4 for depth blur effect
+        onStackComplete: () => {
+            console.log('Stack animation completed!');
+        }
+    });
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -39,7 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = document.getElementById('email-input');
             const messageEl = document.getElementById('form-message');
             const email = emailInput.value;
-            const emailRegex = new RegExp('^\\\\S+@\\\\S+\\\\.\\\\S+$');
+            // FIXED: Corrected email regex
+            const emailRegex = /^\S+@\S+\.\S+$/;
 
             if (email && emailRegex.test(email)) {
                 messageEl.textContent = 'Thank you! You have been added to the waitlist.';
