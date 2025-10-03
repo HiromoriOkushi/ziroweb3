@@ -6,8 +6,8 @@ const config = {
     itemDistance: 30,
     itemScale: 0.03,
     itemStackDistance: 30,
-    stackPosition: '20%',
-    scaleEndPosition: '10%',
+    stickyTop: 180, // Fixed position below header where cards stick
+    scaleEndPosition: 150,
     baseScale: 0.85,
     rotationAmount: 0,
     blurAmount: 0,
@@ -22,13 +22,6 @@ const calculateProgress = (scrollTop, start, end) => {
     if (scrollTop < start) return 0;
     if (scrollTop > end) return 1;
     return (scrollTop - start) / (end - start);
-};
-
-const parsePercentage = (value, containerHeight) => {
-    if (typeof value === 'string' && value.includes('%')) {
-        return (parseFloat(value) / 100) * containerHeight;
-    }
-    return parseFloat(value);
 };
 
 const getScrollData = () => ({
@@ -47,8 +40,6 @@ const updateCardTransforms = () => {
     isUpdating = true;
 
     const { scrollTop, containerHeight } = getScrollData();
-    const stackPositionPx = parsePercentage(config.stackPosition, containerHeight);
-    const scaleEndPositionPx = parsePercentage(config.scaleEndPosition, containerHeight);
 
     const endElement = document.querySelector('.scroll-stack-end');
     if (!endElement) {
@@ -62,15 +53,21 @@ const updateCardTransforms = () => {
         if (!card) return;
 
         const cardTop = getElementOffset(card);
-        const triggerStart = cardTop - stackPositionPx - config.itemStackDistance * i;
-        const triggerEnd = cardTop - scaleEndPositionPx;
         
-        const pinStart = cardTop - stackPositionPx - config.itemStackDistance * i;
-        const pinEnd = endElementTop - containerHeight / 2;
+        // Calculate when this card should start sticking
+        const stickyStartScroll = cardTop - config.stickyTop - (i * config.itemStackDistance);
+        const scaleStartScroll = stickyStartScroll;
+        const scaleEndScroll = cardTop - config.scaleEndPosition;
+        
+        // Calculate when stacking ends (all cards should release)
+        const releaseScroll = endElementTop - containerHeight / 2;
 
-        const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
+        // Scale progress
+        const scaleProgress = calculateProgress(scrollTop, scaleStartScroll, scaleEndScroll);
         const targetScale = config.baseScale + i * config.itemScale;
         const scale = 1 - scaleProgress * (1 - targetScale);
+        
+        // Rotation
         const rotation = config.rotationAmount ? i * config.rotationAmount * scaleProgress : 0;
 
         // Calculate blur based on card depth in stack
@@ -79,8 +76,8 @@ const updateCardTransforms = () => {
             let topCardIndex = 0;
             for (let j = 0; j < cards.length; j++) {
                 const jCardTop = getElementOffset(cards[j]);
-                const jTriggerStart = jCardTop - stackPositionPx - config.itemStackDistance * j;
-                if (scrollTop >= jTriggerStart) {
+                const jStickyStart = jCardTop - config.stickyTop - (j * config.itemStackDistance);
+                if (scrollTop >= jStickyStart) {
                     topCardIndex = j;
                 }
             }
@@ -92,12 +89,17 @@ const updateCardTransforms = () => {
         }
         
         let translateY = 0;
-        const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
-
-        if (isPinned) {
-            translateY = scrollTop - cardTop + stackPositionPx + config.itemStackDistance * i;
-        } else if (scrollTop > pinEnd) {
-            translateY = pinEnd - cardTop + stackPositionPx + config.itemStackDistance * i;
+        
+        // Three states: before sticky, sticky, after release
+        if (scrollTop < stickyStartScroll) {
+            // Before sticky - card is in normal position
+            translateY = 0;
+        } else if (scrollTop >= stickyStartScroll && scrollTop < releaseScroll) {
+            // Sticky - card sticks at fixed position
+            translateY = scrollTop - cardTop + config.stickyTop + (i * config.itemStackDistance);
+        } else {
+            // After release - card moves with the release point
+            translateY = releaseScroll - cardTop + config.stickyTop + (i * config.itemStackDistance);
         }
 
         const newTransform = {
@@ -126,7 +128,7 @@ const updateCardTransforms = () => {
 
         // Check if last card is in view and trigger callback
         if (i === cards.length - 1) {
-            const isInView = scrollTop >= pinStart && scrollTop <= pinEnd;
+            const isInView = scrollTop >= stickyStartScroll && scrollTop < releaseScroll;
             if (isInView && !stackCompletedRef) {
                 stackCompletedRef = true;
                 config.onStackComplete?.();

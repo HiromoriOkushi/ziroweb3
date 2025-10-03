@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
         itemDistance: 30,
         itemScale: 0.03,
         itemStackDistance: 30,
-        stackPosition: '20%',
-        scaleEndPosition: '10%',
+        stickyTop: 180,      // Fixed position where cards stick (below header)
+        scaleEndPosition: 150,
         baseScale: 0.85,
-        rotationAmount: 0,  // Set to 1-2 for subtle rotation effect
-        blurAmount: 0,      // Set to 2-4 for depth blur effect
+        rotationAmount: 0,
+        blurAmount: 0,
         onStackComplete: () => {
             console.log('Stack animation completed!');
         }
@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = document.getElementById('email-input');
             const messageEl = document.getElementById('form-message');
             const email = emailInput.value;
-            // FIXED: Corrected email regex
             const emailRegex = /^\S+@\S+\.\S+$/;
 
             if (email && emailRegex.test(email)) {
