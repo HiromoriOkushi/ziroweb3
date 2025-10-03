@@ -4,17 +4,18 @@ let stackCompletedRef = false;
 
 const config = {
     itemDistance: 30,
-    itemScale: 0.03,
-    itemStackDistance: 30,
-    stickyTop: 180, // Fixed position below header where cards stick
-    scaleEndPosition: 150,
-    baseScale: 0.85,
+    itemScale: 0.1,
+    itemStackDistance: 20,
+    stackPosition: '35%',
+    scaleEndPosition: '10%',
+    baseScale: 0.7,
     rotationAmount: 0,
     blurAmount: 0,
     onStackComplete: null,
 };
 
 let cards = [];
+let cardOriginalTops = []; // CACHE ORIGINAL POSITIONS
 const lastTransforms = new Map();
 let isUpdating = false;
 
@@ -22,6 +23,13 @@ const calculateProgress = (scrollTop, start, end) => {
     if (scrollTop < start) return 0;
     if (scrollTop > end) return 1;
     return (scrollTop - start) / (end - start);
+};
+
+const parsePercentage = (value, containerHeight) => {
+    if (typeof value === 'string' && value.includes('%')) {
+        return (parseFloat(value) / 100) * containerHeight;
+    }
+    return parseFloat(value);
 };
 
 const getScrollData = () => ({
@@ -40,6 +48,8 @@ const updateCardTransforms = () => {
     isUpdating = true;
 
     const { scrollTop, containerHeight } = getScrollData();
+    const stackPositionPx = parsePercentage(config.stackPosition, containerHeight);
+    const scaleEndPositionPx = parsePercentage(config.scaleEndPosition, containerHeight);
 
     const endElement = document.querySelector('.scroll-stack-end');
     if (!endElement) {
@@ -52,22 +62,16 @@ const updateCardTransforms = () => {
     cards.forEach((card, i) => {
         if (!card) return;
 
-        const cardTop = getElementOffset(card);
-        
-        // Calculate when this card should start sticking
-        const stickyStartScroll = cardTop - config.stickyTop - (i * config.itemStackDistance);
-        const scaleStartScroll = stickyStartScroll;
-        const scaleEndScroll = cardTop - config.scaleEndPosition;
-        
-        // Calculate when stacking ends (all cards should release)
-        const releaseScroll = endElementTop - containerHeight / 2;
+        // USE CACHED ORIGINAL POSITION
+        const cardTop = cardOriginalTops[i];
+        const triggerStart = cardTop - stackPositionPx - config.itemStackDistance * i;
+        const triggerEnd = cardTop - scaleEndPositionPx;
+        const pinStart = cardTop - stackPositionPx - config.itemStackDistance * i;
+        const pinEnd = endElementTop - containerHeight / 2;
 
-        // Scale progress
-        const scaleProgress = calculateProgress(scrollTop, scaleStartScroll, scaleEndScroll);
+        const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
         const targetScale = config.baseScale + i * config.itemScale;
         const scale = 1 - scaleProgress * (1 - targetScale);
-        
-        // Rotation
         const rotation = config.rotationAmount ? i * config.rotationAmount * scaleProgress : 0;
 
         // Calculate blur based on card depth in stack
@@ -75,9 +79,9 @@ const updateCardTransforms = () => {
         if (config.blurAmount) {
             let topCardIndex = 0;
             for (let j = 0; j < cards.length; j++) {
-                const jCardTop = getElementOffset(cards[j]);
-                const jStickyStart = jCardTop - config.stickyTop - (j * config.itemStackDistance);
-                if (scrollTop >= jStickyStart) {
+                const jCardTop = cardOriginalTops[j];
+                const jTriggerStart = jCardTop - stackPositionPx - config.itemStackDistance * j;
+                if (scrollTop >= jTriggerStart) {
                     topCardIndex = j;
                 }
             }
@@ -89,17 +93,12 @@ const updateCardTransforms = () => {
         }
         
         let translateY = 0;
-        
-        // Three states: before sticky, sticky, after release
-        if (scrollTop < stickyStartScroll) {
-            // Before sticky - card is in normal position
-            translateY = 0;
-        } else if (scrollTop >= stickyStartScroll && scrollTop < releaseScroll) {
-            // Sticky - card sticks at fixed position
-            translateY = scrollTop - cardTop + config.stickyTop + (i * config.itemStackDistance);
-        } else {
-            // After release - card moves with the release point
-            translateY = releaseScroll - cardTop + config.stickyTop + (i * config.itemStackDistance);
+        const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
+
+        if (isPinned) {
+            translateY = scrollTop - cardTop + stackPositionPx + config.itemStackDistance * i;
+        } else if (scrollTop > pinEnd) {
+            translateY = pinEnd - cardTop + stackPositionPx + config.itemStackDistance * i;
         }
 
         const newTransform = {
@@ -128,7 +127,7 @@ const updateCardTransforms = () => {
 
         // Check if last card is in view and trigger callback
         if (i === cards.length - 1) {
-            const isInView = scrollTop >= stickyStartScroll && scrollTop < releaseScroll;
+            const isInView = scrollTop >= pinStart && scrollTop <= pinEnd;
             if (isInView && !stackCompletedRef) {
                 stackCompletedRef = true;
                 config.onStackComplete?.();
@@ -170,7 +169,18 @@ export function initScrollStack(options = {}) {
     Object.assign(config, options);
 
     cards = Array.from(document.querySelectorAll('.scroll-stack-card'));
-    if (cards.length === 0) return;
+    
+    console.log('Initializing scroll stack with', cards.length, 'cards');
+    console.log('Config:', config);
+    
+    if (cards.length === 0) {
+        console.error('No cards found with class .scroll-stack-card');
+        return;
+    }
+
+    // CACHE ORIGINAL POSITIONS BEFORE ANY TRANSFORMS
+    cardOriginalTops = cards.map(card => getElementOffset(card));
+    console.log('Cached card positions:', cardOriginalTops);
 
     // Apply itemDistance as margin-bottom to all cards except the last
     cards.forEach((card, i) => {
@@ -190,9 +200,14 @@ export function initScrollStack(options = {}) {
     
     setTimeout(() => {
         updateCardTransforms();
+        console.log('Initial transform update complete');
     }, 100);
 
-    window.addEventListener('resize', updateCardTransforms);
+    window.addEventListener('resize', () => {
+        // Recache positions on resize
+        cardOriginalTops = cards.map(card => getElementOffset(card));
+        updateCardTransforms();
+    });
 
     return lenis;
 }

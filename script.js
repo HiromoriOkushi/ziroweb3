@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize scroll stack with custom options
+    // Initialize scroll stack with custom options - matching React defaults
     const lenis = initScrollStack({
         itemDistance: 30,
         itemScale: 0.03,
         itemStackDistance: 30,
-        stickyTop: 180,      // Fixed position where cards stick (below header)
-        scaleEndPosition: 150,
+        stackPosition: '30%',
+        scaleEndPosition: '10%',
         baseScale: 0.85,
         rotationAmount: 0,
         blurAmount: 0,
