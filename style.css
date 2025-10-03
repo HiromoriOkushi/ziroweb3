@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --background: #050505;
+    --text-primary: #EAEAEA;
+    --text-secondary: #A0A0A0;
+    --accent: #00BFFF;
+    --accent-hover: #00A6DD;
+    --accent-glow: rgba(0, 191, 255, 0.2);
+    --card-bg: #111111;
+    --border-color: #222222;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+}
+
+#header {
+    background-color: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+#header.scrolled {
+    border-bottom-color: var(--border-color);
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--accent) 30%, var(--text-primary) 70%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.cta-button {
+    background-color: var(--accent);
+    color: var(--background);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cta-button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 20px 0 var(--accent-glow);
+    border-color: var(--accent);
+}
+
+.numbered-list-item {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* Scroll Stack Effect Styles */
+.scroll-stack-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 40px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transform-origin: top center;
+    will-change: transform;
+}
+
+.scroll-stack-card:last-of-type {
+    margin-bottom: 0;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}

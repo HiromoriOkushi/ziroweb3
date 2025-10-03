@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziro | Your documents are dead. We're making them alive.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-background text-text-primary antialiased">
+
+    <div id="top-blur"></div>
+    <div id="bottom-blur"></div>
+
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold tracking-tighter">Ziro</a>
+            <div class="flex items-center space-x-6">
+                <div class="hidden md:flex items-center space-x-6 text-sm">
+                    <a href="#problem" class="hover:text-accent transition-colors">Problem</a>
+                    <a href="#why" class="hover:text-accent transition-colors">Why</a>
+                    <a href="#what" class="hover:text-accent transition-colors">What</a>
+                    <a href="#how" class="hover:text-accent transition-colors">How</a>
+                    <a href="#use-cases" class="hover:text-accent transition-colors">Use Cases</a>
+                    <a href="#tech" class="hover:text-accent transition-colors">Tech</a>
+                    <a href="#roadmap" class="hover:text-accent transition-colors">Roadmap</a>
+                </div>
+                <a href="#join" class="cta-button text-sm font-semibold px-4 py-2 rounded-md">Join Waitlist</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-24 md:pt-32">
+
+        <!-- Hero Section -->
+        <section id="hero" class="py-20 md:py-32 text-center">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto scroll-reveal">
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight gradient-text mb-6">Your documents are dead. We're making them alive.</h1>
+                    <p class="text-lg md:text-xl text-text-secondary max-w-3xl mx-auto mb-10">A unified, AI-native workspace where you and an AI partner collaborate in real-time to create complex projects from start to finish.</p>
+                    <a href="#join" class="cta-button text-lg font-semibold px-8 py-4 rounded-lg">Join Waitlist</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: The Broken Reality -->
+        <section id="problem" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Problem You Don't Think About Because You've Accepted It</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="card p-8">
+                        <h3 class="font-bold text-accent mb-3 tracking-widest">THE DATA CHANGED</h3>
+                        <p class="text-text-secondary">You spent 8 hours on that analysis. Client sent new numbers. Your document is worthless. Rebuild from scratch.</p>
+                    </div>
+                    <div class="card p-8">
+                        <h3 class="font-bold text-accent mb-3 tracking-widest">WHICH VERSION?</h3>
+                        <p class="text-text-secondary">That chart lives in 3 decks, 2 reports, 5 email threads. One needs updating. Hunt them all down manually.</p>
+                    </div>
+                    <div class="card p-8">
+                        <h3 class="font-bold text-accent mb-3 tracking-widest">SIMPLE EDIT</h3>
+                        <p class="text-text-secondary">"Make the bars blue." Your doc is flattened. There is no edit. Only rebuild.</p>
+                    </div>
+                </div>
+                <p class="text-center text-text-secondary mt-12 md:mt-16">500 million people work this way every day. There's a better way.</p>
+            </div>
+        </section>
+
+        <!-- Section 2: Why Everything Fails -->
+        <section id="why" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 scroll-reveal">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Your Tools Are 40-Year-Old Architecture With AI Duct-Taped On</h2>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="scroll-stack-card p-12">
+                        <p><strong class="text-text-primary">Microsoft Office / Google Docs:</strong> <span class="text-text-secondary">Static files. AI writes text in a sidebar. Your document and the AI live in different worlds.</span></p>
+                    </div>
+                    <div class="scroll-stack-card p-12">
+                        <p><strong class="text-text-primary">Notion / Coda:</strong> <span class="text-text-secondary">Databases pretending to be documents. AI can't see your whole project—just the block you're editing.</span></p>
+                    </div>
+                    <div class="scroll-stack-card p-12">
+                        <p><strong class="text-text-primary">ChatGPT Wrappers:</strong> <span class="text-text-secondary">Generate → Copy → Paste → Discard. No memory. No context. No learning from your edits.</span></p>
+                    </div>
+                    <div class="scroll-stack-card p-12">
+                        <p><strong class="text-text-primary">BI Tools (Tableau, Looker):</strong> <span class="text-text-secondary">Analysis here. Documents there. Copy-paste like it's 1995.</span></p>
+                    </div>
+                </div>
+                <div class="scroll-stack-end"></div>
+                <div class="pt-24">
+                    <p class="text-center text-accent font-semibold mt-12 md:mt-16 scroll-reveal">None of them make the document itself the context window. Ziro does.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 3: What Ziro Actually Is -->
+        <section id="what" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">A Unified Workspace Where Everything Connects</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="card p-8 col-span-1 md:col-span-1 lg:col-span-1">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="file-text" class="mr-3 text-accent"></span>Write</h3>
+                        <p class="text-text-secondary">Create professionally formatted documents, reports, and long-form text—not drafts, finished work.</p>
+                    </div>
+                    <div class="card p-8 col-span-1 md:col-span-1 lg:col-span-1">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="bar-chart-2" class="mr-3 text-accent"></span>Visualize & Spreadsheet</h3>
+                        <p class="text-text-secondary">Work directly with tabular data and create interactive charts. The data IS the document.</p>
+                    </div>
+                    <div class="card p-8 col-span-1 md:col-span-2 lg:col-span-1">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="code" class="mr-3 text-accent"></span>Code</h3>
+                        <p class="text-text-secondary">Write and execute code snippets within your documents for analysis or technical documentation.</p>
+                    </div>
+                    <div class="card p-8 col-span-1 md:col-span-1 lg:col-span-2">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="git-fork" class="mr-3 text-accent"></span>Draw & Diagram</h3>
+                        <p class="text-text-secondary">Build flowcharts, mind maps, and system architectures on a collaborative canvas.</p>
+                    </div>
+                    <div class="card p-8 col-span-1 md:col-span-1 lg:col-span-1">
+                        <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="image" class="mr-3 text-accent"></span>Edit Images</h3>
+                        <p class="text-text-secondary">Perform edits and manipulations on images directly within the project workspace.</p>
+                    </div>
+                </div>
+                <p class="text-center text-text-secondary mt-12 md:mt-16 text-lg">Five capabilities. One AI partner. One living document.</p>
+            </div>
+        </section>
+
+        <!-- Section 4: How You Actually Work -->
+        <section id="how" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Document IS the Context Window</h2>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-12">
+                    <div class="flex items-start">
+                        <div class="numbered-list-item">01</div>
+                        <div>
+                            <h3 class="font-bold text-accent tracking-widest mb-2">YOUR PROJECT IS THE AI'S MEMORY</h3>
+                            <p class="text-text-secondary">The entire file—text, data, diagrams, code—is the living context. The AI understands your whole project, not just a highlighted paragraph.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="numbered-list-item">02</div>
+                        <div>
+                            <h3 class="font-bold text-accent tracking-widest mb-2">EDITING IS YOUR PRIMARY INTERACTION</h3>
+                            <p class="text-text-secondary">You don't prompt. You edit. As the AI streams its draft directly onto the canvas, you refine it in real-time. Your edits continuously update the context and shape the AI's understanding.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="numbered-list-item">03</div>
+                        <div>
+                            <h3 class="font-bold text-accent tracking-widest mb-2">THE AI LEARNS FROM EVERY EDIT</h3>
+                            <p class="text-text-secondary">The system captures the delta between the AI's raw output and your final version. That difference trains the AI to match your style, tone, and judgment. Over time, it becomes YOUR AI.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-lg text-text-primary mt-12 md:mt-16 font-medium">Not a chatbot in a sidebar. A partner on your canvas.</p>
+            </div>
+        </section>
+
+        <!-- Section 5: Built For High-Stakes Work -->
+        <section id="use-cases" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Trust Through Transparency</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="card p-8">
+                        <h3 class="font-bold text-lg mb-2">Investment Analysts</h3>
+                        <p class="text-text-secondary">Your models need audit trails. Ziro tracks every AI suggestion and every human decision, creating a complete record of how your analysis was built.</p>
+                    </div>
+                    <div class="card p-8">
+                        <h3 class="font-bold text-lg mb-2">Legal & Compliance Teams</h3>
+                        <p class="text-text-secondary">When your work faces regulatory scrutiny, you need provenance. See the AI's plan, review its sources, track every change like Git for documents.</p>
+                    </div>
+                    <div class="card p-8">
+                        <h3 class="font-bold text-lg mb-2">Research Teams</h3>
+                        <p class="text-text-secondary">Your papers require reproducibility. Ziro doesn't just store the output—it stores the data sources, AI suggestions, and human decisions that created it.</p>
+                    </div>
+                </div>
+                <p class="text-center text-text-secondary mt-12 md:mt-16 text-lg">A system of record for auditable human-AI collaboration.</p>
+            </div>
+        </section>
+
+        <!-- Section 6: The Technical Difference -->
+        <section id="tech" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Why Competitors Can't Catch Us</h2>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-10">
+                    <div>
+                        <h3 class="font-bold text-accent tracking-widest mb-2">VISIBLE AGENTIC WORKFLOW</h3>
+                        <p class="text-text-secondary">You see the AI's "plan of attack"—a visual map of specialized agents working together. A Data Analyst Agent hands off to a Chart Generation Agent. Fully transparent. Fully auditable.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-accent tracking-widest mb-2">COMPLETE VERSION CONTROL</h3>
+                        <p class="text-text-secondary">Git for documents. Every change from you and the AI is tracked. View the "diff" between the AI's suggestion and your final edit. Nothing is ever lost.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-accent tracking-widest mb-2">SELF-IMPROVING, PERSONALIZED AI</h3>
+                        <p class="text-text-secondary">The edit deltas become training data. Accept a change? Positive signal. Adjust it? The AI learns the correction. This creates a hyper-personalized partner that compounds over time.</p>
+                    </div>
+                </div>
+                <p class="text-center text-text-secondary mt-12 md:mt-16 max-w-3xl mx-auto">You can copy our tech stack in 6 months. You can't copy 10,000 users' worth of personalized edit history training their own AI models.</p>
+            </div>
+        </section>
+
+        <!-- Section 7: The Roadmap -->
+        <section id="roadmap" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Roadmap</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card p-8">
+                        <h3 class="font-bold text-lg mb-4 text-accent">Phase 1 <span class="text-text-secondary font-normal text-sm">(Now → Month 6)</span></h3>
+                        <ul class="list-disc list-inside space-y-2 text-text-secondary">
+                            <li>Document-as-context-window architecture</li>
+                            <li>Integrated version control system</li>
+                            <li>Real-time AI streaming to canvas</li>
+                            <li>100 design partners</li>
+                        </ul>
+                    </div>
+                    <div class="card p-8">
+                        <h3 class="font-bold text-lg mb-4 text-accent">Phase 2 <span class="text-text-secondary font-normal text-sm">(Month 7-12)</span></h3>
+                        <ul class="list-disc list-inside space-y-2 text-text-secondary">
+                            <li>Full workspace: Write, Visualize, Code, Draw, Edit</li>
+                            <li>Visible agentic workflow UI</li>
+                            <li>Delta capture & RL training pipeline</li>
+                            <li>5,000 active users</li>
+                        </ul>
+                    </div>
+                    <div class="card p-8">
+                        <h3 class="font-bold text-lg mb-4 text-accent">Phase 3 <span class="text-text-secondary font-normal text-sm">(Month 13-18)</span></h3>
+                        <ul class="list-disc list-inside space-y-2 text-text-secondary">
+                            <li>Enterprise audit & compliance features</li>
+                            <li>Custom agent marketplace</li>
+                            <li>API ecosystem</li>
+                            <li>Category leadership</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-center text-text-secondary mt-12 md:mt-16">We're in Phase 1, Month 2. Join the journey.</p>
+            </div>
+        </section>
+
+        <!-- Section 8: The Team -->
+        <section id="team" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 scroll-reveal">
+                <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">We're Not Theorizing. We're Building.</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="card p-8 text-center">
+                        <h3 class="font-bold text-lg">Eaman Okumori Javid</h3>
+                        <p class="text-accent text-sm mb-4">CEO</p>
+                        <p class="text-text-secondary">MEng General Engineering, King's College London. Built quantitative finance models, regulatory frameworks, capital raising infrastructure. Domain expert in broken workflows.</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <h3 class="font-bold text-lg">Zinelyes Amlik</h3>
+                        <p class="text-accent text-sm mb-4">CTO</p>
+                        <p class="text-text-secondary">MSc Computational Science, Imperial College London. Built RL systems, production ML pipelines, full-stack platforms. Makes the architecture real.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Join -->
+        <section id="join" class="py-16 md:py-24">
+            <div class="container mx-auto px-6 text-center max-w-2xl scroll-reveal">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">The Age of Static Documents Is Ending</h2>
+                <p class="text-text-secondary mb-8">Design partner program opens Q1 2025. Be first in line.</p>
+                <form id="waitlist-form" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <input type="email" id="email-input" placeholder="your.email@company.com" required class="flex-grow px-4 py-3 rounded-md bg-card border border-border-color focus:ring-2 focus:ring-accent focus:outline-none transition-shadow text-text-primary placeholder-text-secondary">
+                    <button type="submit" class="cta-button font-semibold px-8 py-3 rounded-md">Join Waitlist</button>
+                </form>
+                <p id="form-message" class="mt-4 h-6"></p>
+                <p class="text-text-secondary mt-8 text-sm max-w-md mx-auto">We're building this whether you join or not. But it'll be better if you help shape it.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-12 border-t border-border-color">
+        <div class="container mx-auto px-6 text-center text-text-secondary">
+            <p class="text-lg font-semibold text-text-primary mb-4">Documents, but alive.</p>
+            <div class="flex justify-center items-center space-x-6 mb-6">
+                <a href="#" class="hover:text-accent transition-colors">Twitter/X</a>
+                <span>|</span>
+                <a href="#" class="hover:text-accent transition-colors">LinkedIn</a>
+                <span>|</span>
+                <a href="mailto:info@ziro.pub" class="hover:text-accent transition-colors">info@ziro.pub</a>
+            </div>
+            <p class="text-sm">© 2025 Ziro</p>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+    <script type="module">
+        import GradualBlur from './gradual_blur.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            new GradualBlur('#top-blur', {
+                target: 'page',
+                position: 'top',
+                strength: 3,
+                height: '10rem',
+                divCount: 10,
+                curve: 'ease-in',
+                zIndex: 40
+            });
+            new GradualBlur('#bottom-blur', {
+                target: 'page',
+                position: 'bottom',
+                strength: 3,
+                height: '10rem',
+                divCount: 10,
+                curve: 'ease-in',
+                zIndex: 40
+            });
+        });
+    </script>
+</body>
+</html>
