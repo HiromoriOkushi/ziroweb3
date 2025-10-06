@@ -18,6 +18,23 @@ body {
     color: var(--text-primary);
 }
 
+/* Particles.js Background Styling */
+#particles-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Sits just above the body background */
+}
+
+/* New Content Wrapper */
+#page-content {
+    position: relative; /* Creates a new stacking context */
+    z-index: 2;        /* Sits on top of the particle background */
+    background-color: transparent; /* Allows particles to be seen through it */
+}
+
 #header {
     background-color: rgba(5, 5, 5, 0.8);
     backdrop-filter: blur(12px);

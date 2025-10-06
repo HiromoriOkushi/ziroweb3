@@ -4,6 +4,76 @@ import { initScrollStack } from './scroll_stack.js';
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 
+    // Initialize Particles.js
+    if (document.getElementById('particles-bg')) {
+        particlesJS('particles-bg', {
+            "particles": {
+                "number": {
+                    "value": 160, // Number of particles
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff" // Particle color
+                },
+                "shape": {
+                    "type": "circle",
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 2, // Particle size
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                    }
+                },
+                "line_linked": {
+                    "enable": false, // No lines connecting particles
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 0.4, // Movement speed
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse" // Particles move away from cursor
+                    },
+                    "onclick": {
+                        "enable": false,
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 80,
+                        "duration": 0.4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    }
+
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
