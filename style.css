@@ -108,7 +108,7 @@ body {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
     transform-origin: top center;
     will-change: transform, filter;
-    backfaceVisibility: hidden;
+    backface-visibility: hidden;
     transform-style: preserve-3d;
     position: relative;
     /* Improve mobile performance */

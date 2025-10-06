@@ -18,6 +18,7 @@ let cards = [];
 let cardOriginalTops = []; // CACHE ORIGINAL POSITIONS
 const lastTransforms = new Map();
 let isUpdating = false;
+let stickyHeaderElement; // Variable to hold the section's sticky header
 
 const calculateProgress = (scrollTop, start, end) => {
     if (scrollTop < start) return 0;
@@ -38,6 +39,7 @@ const getScrollData = () => ({
 });
 
 const getElementOffset = (element) => {
+    if (!element) return 0;
     const rect = element.getBoundingClientRect();
     return rect.top + window.scrollY;
 };
@@ -51,30 +53,41 @@ const updateCardTransforms = () => {
     const stackPositionPx = parsePercentage(config.stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(config.scaleEndPosition, containerHeight);
 
-    const endElement = document.querySelector('.scroll-stack-end');
-    if (!endElement) {
+    const endTextElement = document.getElementById('final-stack-text');
+    if (!endTextElement) {
         isUpdating = false;
         return;
     }
 
-    const endElementTop = getElementOffset(endElement);
+    const endTextElementTop = getElementOffset(endTextElement);
+    const desiredFinalTop = containerHeight * 0.75;
+    const pinEnd = endTextElementTop - desiredFinalTop;
+
+    // Dynamically adjust the 'top' style of the sticky header to make it scroll off-screen
+    if (stickyHeaderElement) {
+        if (scrollTop > pinEnd) {
+            const mainHeaderHeight = 72; // This is the value of --header-height from CSS
+            const scrollDelta = scrollTop - pinEnd;
+            const newTop = mainHeaderHeight - scrollDelta;
+            stickyHeaderElement.style.top = `${newTop}px`;
+        } else {
+            stickyHeaderElement.style.top = `var(--header-height)`; // Reset to its original sticky position
+        }
+    }
 
     cards.forEach((card, i) => {
         if (!card) return;
 
-        // USE CACHED ORIGINAL POSITION
         const cardTop = cardOriginalTops[i];
         const triggerStart = cardTop - stackPositionPx - config.itemStackDistance * i;
         const triggerEnd = cardTop - scaleEndPositionPx;
         const pinStart = cardTop - stackPositionPx - config.itemStackDistance * i;
-        const pinEnd = endElementTop - containerHeight / 2;
 
         const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
         const targetScale = config.baseScale + i * config.itemScale;
         const scale = 1 - scaleProgress * (1 - targetScale);
         const rotation = config.rotationAmount ? i * config.rotationAmount * scaleProgress : 0;
 
-        // Calculate blur based on card depth in stack
         let blur = 0;
         if (config.blurAmount) {
             let topCardIndex = 0;
@@ -85,7 +98,6 @@ const updateCardTransforms = () => {
                     topCardIndex = j;
                 }
             }
-
             if (i < topCardIndex) {
                 const depthInStack = topCardIndex - i;
                 blur = Math.max(0, depthInStack * config.blurAmount);
@@ -125,7 +137,6 @@ const updateCardTransforms = () => {
             lastTransforms.set(i, newTransform);
         }
 
-        // Check if last card is in view and trigger callback
         if (i === cards.length - 1) {
             const isInView = scrollTop >= pinStart && scrollTop <= pinEnd;
             if (isInView && !stackCompletedRef) {
@@ -165,24 +176,22 @@ const setupLenis = () => {
 };
 
 export function initScrollStack(options = {}) {
-    // Merge custom options with defaults
     Object.assign(config, options);
 
     cards = Array.from(document.querySelectorAll('.scroll-stack-card'));
     
-    console.log('Initializing scroll stack with', cards.length, 'cards');
-    console.log('Config:', config);
-    
     if (cards.length === 0) {
-        console.error('No cards found with class .scroll-stack-card');
         return;
     }
 
-    // CACHE ORIGINAL POSITIONS BEFORE ANY TRANSFORMS
-    cardOriginalTops = cards.map(card => getElementOffset(card));
-    console.log('Cached card positions:', cardOriginalTops);
+    // Find the sticky header associated with this stack section
+    const parentSection = cards[0].closest('.section-with-sticky');
+    if (parentSection) {
+        stickyHeaderElement = parentSection.querySelector('.sticky-header');
+    }
 
-    // Apply itemDistance as margin-bottom to all cards except the last
+    cardOriginalTops = cards.map(card => getElementOffset(card));
+
     cards.forEach((card, i) => {
         if (i < cards.length - 1) {
             card.style.marginBottom = `${config.itemDistance}px`;
@@ -191,20 +200,15 @@ export function initScrollStack(options = {}) {
         card.style.transformOrigin = 'top center';
         card.style.backfaceVisibility = 'hidden';
         card.style.transform = 'translateZ(0)';
-        card.style.webkitTransform = 'translateZ(0)';
-        card.style.perspective = '1000px';
-        card.style.webkitPerspective = '1000px';
     });
 
     setupLenis();
     
     setTimeout(() => {
         updateCardTransforms();
-        console.log('Initial transform update complete');
     }, 100);
 
     window.addEventListener('resize', () => {
-        // Recache positions on resize
         cardOriginalTops = cards.map(card => getElementOffset(card));
         updateCardTransforms();
     });

@@ -13,16 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize scroll stack with custom options - matching React defaults
+    // Initialize scroll stack with your new custom options
     const lenis = initScrollStack({
-        itemDistance: 30,
+        itemDistance: 45,
         itemScale: 0.03,
         itemStackDistance: 30,
         stackPosition: '30%',
-        scaleEndPosition: '10%',
-        baseScale: 0.85,
+        scaleEndPosition: '20%',
+        baseScale: 0.75,
         rotationAmount: 0,
-        blurAmount: 0,
+        blurAmount: 0.5,
         onStackComplete: () => {
             console.log('Stack animation completed!');
         }
