@@ -14,6 +14,9 @@
 </head>
 <body class="bg-background text-text-primary antialiased">
 
+    <!-- New Parallax Background Element -->
+    <div id="parallax-bg"></div>
+
     <!-- Background and Overlay Elements -->
     <div id="particles-bg"></div>
     <div id="top-blur"></div>
@@ -129,7 +132,7 @@
                             <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="git-fork" class="mr-3 text-accent"></span>Draw & Diagram</h3>
                             <p class="text-text-secondary">Build flowcharts, mind maps, and system architectures on a collaborative canvas.</p>
                         </div>
-                        <div class="card p-8 col-span-1 md:col-span-1 lg:col-span-1">
+                        <div class="card p-8 col-span-1 md:col-span-1 lg-col-span-1">
                             <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="image" class="mr-3 text-accent"></span>Edit Images</h3>
                             <p class="text-text-secondary">Perform edits and manipulations on images directly within the project workspace.</p>
                         </div>
@@ -317,6 +320,7 @@
         </footer>
     </div> <!-- End Page Content Wrapper -->
 
+
     <!-- Add Particles.js library -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script type="module" src="script.js"></script>
@@ -328,7 +332,7 @@
                 target: 'page',
                 position: 'top',
                 strength: 3,
-                height: '7rem',
+                height: '10rem',
                 divCount: 10,
                 curve: 'ease-in',
                 zIndex: 40
@@ -337,7 +341,7 @@
                 target: 'page',
                 position: 'bottom',
                 strength: 3,
-                height: '3rem',
+                height: '10rem',
                 divCount: 10,
                 curve: 'ease-in',
                 zIndex: 40

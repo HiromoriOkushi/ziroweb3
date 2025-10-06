@@ -8,82 +8,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('particles-bg')) {
         particlesJS('particles-bg', {
             "particles": {
-                "number": {
-                    "value": 160, // Number of particles
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#ffffff" // Particle color
-                },
-                "shape": {
-                    "type": "circle",
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 2, // Particle size
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                    }
-                },
-                "line_linked": {
-                    "enable": false, // No lines connecting particles
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 0.4, // Movement speed
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                }
+                "number": { "value": 160, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.8, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                "size": { "value": 3.5, "random": true, "anim": { "enable": false } },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 0.4, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
             },
             "interactivity": {
                 "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse" // Particles move away from cursor
-                    },
-                    "onclick": {
-                        "enable": false,
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "repulse": {
-                        "distance": 80,
-                        "duration": 0.4
-                    }
-                }
+                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": false }, "resize": true },
+                "modes": { "repulse": { "distance": 80, "duration": 0.4 } }
             },
             "retina_detect": true
         });
     }
 
+    const parallaxBg = document.getElementById('parallax-bg');
     const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
 
-    // Initialize scroll stack with your new custom options
+    // Function to set parallax height to match the entire document
+    const updateParallaxHeight = () => {
+        if (parallaxBg) {
+            // Set height to be the same as the full scrollable page height
+            parallaxBg.style.height = `${document.body.scrollHeight}px`;
+        }
+    };
+
+    // Set initial height and update it on window resize
+    updateParallaxHeight();
+    window.addEventListener('resize', updateParallaxHeight);
+
+
     const lenis = initScrollStack({
         itemDistance: 45,
         itemScale: 0.03,
@@ -98,6 +55,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Handle all scroll-based animations in one place using Lenis
+    if (lenis) {
+        lenis.on('scroll', (e) => {
+            // Header scroll effect
+            if (e.scroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            // Parallax scroll effect
+            if (parallaxBg) {
+                // By translating the background up as we scroll down,
+                // it appears to move slower than the content.
+                parallaxBg.style.transform = `translateY(${e.scroll * 0.7}px)`;
+            }
+        });
+    }
+
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -107,9 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (targetId) {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
                 }
             }
         });
@@ -128,15 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageEl.textContent = 'Thank you! You have been added to the waitlist.';
                 messageEl.className = 'text-green-400 mt-4 h-6';
                 emailInput.value = '';
-                setTimeout(() => {
-                    messageEl.textContent = '';
-                }, 5000);
+                setTimeout(() => { messageEl.textContent = ''; }, 5000);
             } else {
                 messageEl.textContent = 'Please enter a valid email address.';
                 messageEl.className = 'text-red-400 mt-4 h-6';
-                 setTimeout(() => {
-                    messageEl.textContent = '';
-                }, 3000);
+                setTimeout(() => { messageEl.textContent = ''; }, 3000);
             }
         });
     }

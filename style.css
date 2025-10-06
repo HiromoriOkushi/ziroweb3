@@ -18,6 +18,22 @@ body {
     color: var(--text-primary);
 }
 
+/* Parallax Background Styling -- CORRECTED */
+#parallax-bg {
+    position: absolute; /* Changed from fixed to absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Height is now set dynamically by JavaScript */
+    background-image: url('sparkles.png');
+    background-repeat: repeat;
+    background-size: 500px;
+    z-index: 0;
+    opacity: 0.2;
+    will-change: transform;
+}
+
+
 /* Particles.js Background Styling */
 #particles-bg {
     position: fixed;
@@ -25,14 +41,14 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 1; /* Sits just above the body background */
+    z-index: 1; /* Sits on top of the parallax bg */
 }
 
 /* New Content Wrapper */
 #page-content {
-    position: relative; /* Creates a new stacking context */
-    z-index: 2;        /* Sits on top of the particle background */
-    background-color: transparent; /* Allows particles to be seen through it */
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
 }
 
 #header {
