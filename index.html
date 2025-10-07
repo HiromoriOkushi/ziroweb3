@@ -14,15 +14,15 @@
 </head>
 <body class="bg-background text-text-primary antialiased">
 
-    <!-- New Parallax Background Element -->
-    <div id="parallax-bg"></div>
+    <!-- NEW: Unified container for all background effects -->
+    <div id="background-container">
+        <div id="particles-bg"></div>
+        <div id="sparkle-effect-container"></div>
+    </div>
 
-    <!-- Background and Overlay Elements -->
-    <div id="particles-bg"></div>
     <div id="top-blur"></div>
     <div id="bottom-blur"></div>
 
-    <!-- Header moved outside of the content wrapper -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#hero" class="text-2xl font-bold tracking-tighter">Ziro</a>
@@ -41,9 +41,10 @@
         </nav>
     </header>
 
-    <!-- Page Content Wrapper -->
+    <!-- Main Page Content -->
     <div id="page-content">
         <main class="pt-24 md:pt-32">
+
             <!-- Hero Section -->
             <section id="hero" class="py-20 md:py-32 text-center">
                 <div class="container mx-auto px-6">
@@ -55,9 +56,7 @@
                 </div>
             </section>
 
-            <!-- All other sections remain inside main -->
-            <!-- ... -->
-             <!-- Section 1: The Broken Reality -->
+            <!-- Section 1: The Broken Reality -->
             <section id="problem" class="py-16 md:py-24">
                 <div class="container mx-auto px-6 scroll-reveal">
                     <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
@@ -108,7 +107,6 @@
                 </div>
             </section>
 
-
             <!-- Section 3: What Ziro Actually Is -->
             <section id="what" class="py-16 md:py-24">
                 <div class="container mx-auto px-6 scroll-reveal">
@@ -132,7 +130,7 @@
                             <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="git-fork" class="mr-3 text-accent"></span>Draw & Diagram</h3>
                             <p class="text-text-secondary">Build flowcharts, mind maps, and system architectures on a collaborative canvas.</p>
                         </div>
-                        <div class="card p-8 col-span-1 md:col-span-1 lg-col-span-1">
+                        <div class="card p-8 col-span-1 md:col-span-1 lg:col-span-1">
                             <h3 class="font-bold text-lg mb-2 flex items-center"><span data-lucide="image" class="mr-3 text-accent"></span>Edit Images</h3>
                             <p class="text-text-secondary">Perform edits and manipulations on images directly within the project workspace.</p>
                         </div>
@@ -303,6 +301,7 @@
                     <p class="text-text-secondary mt-8 text-sm max-w-md mx-auto">We're building this whether you join or not. But it'll be better if you help shape it.</p>
                 </div>
             </section>
+
         </main>
 
         <footer class="py-12 border-t border-border-color">
@@ -320,8 +319,7 @@
         </footer>
     </div> <!-- End Page Content Wrapper -->
 
-
-    <!-- Add Particles.js library -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script type="module" src="script.js"></script>
     <script type="module">

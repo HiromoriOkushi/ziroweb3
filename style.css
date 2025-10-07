@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display.swap');
 
 :root {
     --background: #050505;
     --text-primary: #EAEAEA;
     --text-secondary: #A0A0A0;
     --accent: #00BFFF;
+    --accent-secondary: #e60073;
     --accent-hover: #00A6DD;
     --accent-glow: rgba(0, 191, 255, 0.2);
     --card-bg: #111111;
@@ -18,36 +19,101 @@ body {
     color: var(--text-primary);
 }
 
-/* Parallax Background Styling -- CORRECTED */
-#parallax-bg {
-    position: absolute; /* Changed from fixed to absolute */
+/* --- UNIFIED BACKGROUND CONTAINER --- */
+
+#background-container {
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    /* Height is now set dynamically by JavaScript */
-    background-image: url('sparkles.png');
-    background-repeat: repeat;
-    background-size: 500px;
-    z-index: 0;
-    opacity: 0.2;
-    will-change: transform;
-}
-
-
-/* Particles.js Background Styling */
-#particles-bg {
-    position: fixed;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1; /* Sits on top of the parallax bg */
+    z-index: 0; /* Sits behind everything else */
+    pointer-events: none;
+    overflow: hidden;
 }
 
-/* New Content Wrapper */
+/* --- EFFECT LAYERS (Positioned inside the container) --- */
+
+#particles-bg {
+    position: absolute; /* Changed from fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Furthest back layer inside the container */
+}
+
+#sparkle-effect-container {
+    position: absolute; /* Changed from fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Sits on top of the particles */
+    position: relative; /* For layering internal pseudo-elements */
+    background-color: rgba(255, 255, 255, 0.2);
+
+    mask-image: url('sparkles.png');
+    mask-size: 500px;
+    mask-repeat: repeat;
+    mask-position: 0 0;
+    -webkit-mask-image: url('sparkles.png');
+    -webkit-mask-size: 500px;
+    -webkit-mask-repeat: repeat;
+    -webkit-mask-position: 0 0;
+}
+
+#sparkle-effect-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, var(--accent), transparent 70%);
+    z-index: 1;
+    animation: subtleGlow 20s ease-in-out infinite alternate;
+}
+
+@keyframes subtleGlow {
+    from { transform: scale(1); opacity: 0.2; }
+    to { transform: scale(1.5); opacity: 0.4; }
+}
+
+.glow-spot {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent) 0%, rgba(0,191,255,0) 60%);
+    filter: blur(50px);
+    opacity: 1;
+    animation: longTwinkle ease-in-out;
+    z-index: 2;
+}
+
+.mouse-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-secondary) 0%, rgba(230,0,115,0) 90%);
+    filter: blur(50px);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.5s ease-in-out;
+    z-index: 2;
+}
+
+@keyframes longTwinkle {
+    0%   { transform: scale(0.7); opacity: 0; }
+    20%  { opacity: 0.6;}
+    50%  { opacity: 1; }
+    70%  { opacity: 0.6; }
+    100% { transform: scale(1.1); opacity: 0; }
+}
+
+/* --- LAYOUT AND CONTENT --- */
+
 #page-content {
     position: relative;
-    z-index: 2;
+    z-index: 3; /* Sits on top of the background container */
     background-color: transparent;
 }
 
@@ -109,7 +175,6 @@ body {
   transform: translateY(40px);
 }
 
-/* Sticky Section Headers */
 .section-with-sticky {
     position: relative;
 }
@@ -127,13 +192,11 @@ body {
     margin: 0;
 }
 
-/* Scroll Stack Section - Add padding like React component */
 #why .container {
     padding-top: 20vh;
     padding-bottom: 50vh;
 }
 
-/* Scroll Stack Effect Styles */
 .scroll-stack-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -144,7 +207,6 @@ body {
     backface-visibility: hidden;
     transform-style: preserve-3d;
     position: relative;
-    /* Improve mobile performance */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     perspective: 1000px;
