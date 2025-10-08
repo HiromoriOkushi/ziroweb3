@@ -61,6 +61,23 @@ document.addEventListener('DOMContentLoaded', () => {
         scaleEndPosition: '20%', baseScale: 0.75, rotationAmount: 0, blurAmount: 0.5,
         onStackComplete: () => console.log('Stack animation completed!')
     });
+
+    // --- NEW: HERO FADE LOGIC SETUP ---
+    const imageHero = document.getElementById('image-hero');
+    
+    const handleHeroFade = (scrollValue) => {
+        if (!imageHero) return;
+        const fadeOutDistance = window.innerHeight * 0.6; // Fade out over 60% of the screen height
+
+        if (scrollValue < fadeOutDistance) {
+            const opacity = 1 - (scrollValue / fadeOutDistance);
+            imageHero.style.opacity = Math.max(0, opacity).toFixed(2);
+            imageHero.style.pointerEvents = 'auto'; // Keep it interactive while visible
+        } else {
+            imageHero.style.opacity = '0';
+            imageHero.style.pointerEvents = 'none'; // Disable pointer events when faded out
+        }
+    };
     
     // --- EDITED: NEW ROBUST NAVBAR LOGIC ---
     const navbar = document.getElementById('navbar');
@@ -121,8 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lenis) {
         lenis.on('scroll', (e) => {
             if (sparkleContainer) sparkleContainer.style.maskPosition = `0px ${e.scroll * 0.3}px`;
+            // NEW: Call the hero fade handler on scroll
+            handleHeroFade(e.scroll);
         });
+    } else {
+        // Fallback for hero fade if Lenis isn't initialized
+        window.addEventListener('scroll', () => handleHeroFade(window.scrollY));
     }
+    
+    // NEW: Initial check on load for hero fade
+    handleHeroFade(window.scrollY);
 
     // Handle clicks
     navLinks.forEach(link => {
