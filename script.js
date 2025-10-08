@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const sparkleContainer = document.getElementById('sparkle-effect-container');
 
-    // SINE-WAVE DRIVEN ANIMATION LOGIC
     if (sparkleContainer) {
         const GRID_COLUMNS = 4, GRID_ROWS = 3, TOTAL_ZONES = GRID_COLUMNS * GRID_ROWS, ANIMATION_DURATION = 3500;
         const glowSpots = [], zoneIndexes = Array.from({ length: TOTAL_ZONES }, (_, i) => i), activeGlows = [];
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerWave();
     }
     
-    // Mouse-Following Glow Logic
     if (sparkleContainer) {
         const mouseGlow = document.createElement('div'); mouseGlow.className = 'mouse-glow'; sparkleContainer.appendChild(mouseGlow);
         let isActive = false;
@@ -62,37 +60,39 @@ document.addEventListener('DOMContentLoaded', () => {
         onStackComplete: () => console.log('Stack animation completed!')
     });
 
-    // --- NEW: HERO FADE LOGIC SETUP ---
     const imageHero = document.getElementById('image-hero');
-    
     const handleHeroFade = (scrollValue) => {
         if (!imageHero) return;
-        const fadeOutDistance = window.innerHeight * 0.6; // Fade out over 60% of the screen height
-
+        const fadeOutDistance = window.innerHeight * 0.6;
         if (scrollValue < fadeOutDistance) {
             const opacity = 1 - (scrollValue / fadeOutDistance);
             imageHero.style.opacity = Math.max(0, opacity).toFixed(2);
-            imageHero.style.pointerEvents = 'auto'; // Keep it interactive while visible
+            imageHero.style.pointerEvents = 'auto';
         } else {
             imageHero.style.opacity = '0';
-            imageHero.style.pointerEvents = 'none'; // Disable pointer events when faded out
+            imageHero.style.pointerEvents = 'none';
         }
     };
     
-    // --- EDITED: NEW ROBUST NAVBAR LOGIC ---
+    // --- DEFINITIVE NAVBAR LOGIC ---
     const navbar = document.getElementById('navbar');
     const navLinks = document.querySelectorAll('.navbar-link');
     const navLamp = document.getElementById('navbar-lamp');
-    const sections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    const contentSections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
 
-    // Observer for Hero Section
-    const heroSection = document.getElementById('hero');
-    const heroObserver = new IntersectionObserver(([entry]) => {
-        navbar.classList.toggle('hero-visible', entry.isIntersecting);
-    }, { threshold: 0.1 });
-    if (heroSection) heroObserver.observe(heroSection);
+    // Observer 1: Watches the hero area to suppress nav styling
+    const heroAreaObserver = new IntersectionObserver((entries) => {
+        // If ANY of the observed hero sections are visible, suppress the nav styles.
+        const isHeroAreaVisible = entries.some(entry => entry.isIntersecting);
+        navbar.classList.toggle('nav-suppressed', isHeroAreaVisible);
+    }, { threshold: 0.01 }); // A low threshold ensures it triggers as soon as any part is visible
 
-    // Observer for content sections to determine the most visible
+    const imageHeroSection = document.getElementById('image-hero');
+    const textHeroSection = document.getElementById('hero');
+    if (imageHeroSection) heroAreaObserver.observe(imageHeroSection);
+    if (textHeroSection) heroAreaObserver.observe(textHeroSection);
+
+    // Observer 2: Watches the content sections to determine the active link
     const visibleSections = new Map();
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let maxRatio = 0;
         let mostVisibleId = null;
-
         visibleSections.forEach((ratio, id) => {
             if (ratio > maxRatio) {
                 maxRatio = ratio;
@@ -111,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (mostVisibleId) {
             navLinks.forEach(link => {
-                // CORRECTED SYNTAX ERROR HERE
                 const isActive = link.getAttribute('href') === `#${mostVisibleId}`;
                 link.classList.toggle('active', isActive);
                 if (isActive) {
@@ -119,9 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    }, { threshold: Array.from({ length: 51 }, (_, i) => i / 50) }); // Use 50 steps for good precision without being excessive
-
-    sections.forEach(section => {
+    }, { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) }); // 20 steps is enough
+    
+    contentSections.forEach(section => {
         if (section) sectionObserver.observe(section);
     });
 
@@ -134,28 +132,22 @@ document.addEventListener('DOMContentLoaded', () => {
         navLamp.style.transform = `translateX(${offsetX}px)`;
     };
 
-    // Main scroll handler
     if (lenis) {
         lenis.on('scroll', (e) => {
             if (sparkleContainer) sparkleContainer.style.maskPosition = `0px ${e.scroll * 0.3}px`;
-            // NEW: Call the hero fade handler on scroll
             handleHeroFade(e.scroll);
         });
     } else {
-        // Fallback for hero fade if Lenis isn't initialized
         window.addEventListener('scroll', () => handleHeroFade(window.scrollY));
     }
     
-    // NEW: Initial check on load for hero fade
     handleHeroFade(window.scrollY);
 
-    // Handle clicks
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            updateLampPosition(this); 
             const targetId = this.getAttribute('href');
-            if (lenis) lenis.scrollTo(targetId, { offset: -10 * 16 }); // 10rem offset
+            if (lenis) lenis.scrollTo(targetId, { offset: -10 * 16 });
         });
     });
 
@@ -164,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (lenis) lenis.scrollTo("#join");
     });
     
-    // Initial state check
     setTimeout(() => {
         const activeLink = document.querySelector('.navbar-link.active');
         if (activeLink) {
@@ -175,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const waitlistForm = document.getElementById('waitlist-form');
     if (waitlistForm) {
-        // ... (This section is unchanged)
         waitlistForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const emailInput = document.getElementById('email-input'), messageEl = document.getElementById('form-message'), email = emailInput.value;

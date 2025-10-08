@@ -105,12 +105,10 @@ body {
 
 /* --- LAYOUT AND CONTENT --- */
 
-/* NEW: Style for the fading hero section */
 #image-hero {
     will-change: opacity;
 }
 
-/* MODIFIED: Pushed the main content down by the height of the hero */
 #page-content {
     position: relative;
     z-index: 3;
@@ -150,8 +148,14 @@ body {
     color: var(--accent);
 }
 
+/* The link is highlighted when active */
 .navbar-link.active {
     color: var(--accent);
+}
+
+/* BUT, if the nav is suppressed, force the active link's color back to the default */
+#navbar.nav-suppressed .navbar-link.active {
+    color: var(--text-secondary);
 }
 
 .navbar-cta-button {
@@ -175,7 +179,8 @@ body {
     transition: transform 0.4s cubic-bezier(0.45, 0, 0.15, 1), width 0.4s cubic-bezier(0.45, 0, 0.15, 1), opacity 0.3s ease;
 }
 
-#navbar.hero-visible #navbar-lamp {
+/* If the nav is suppressed, hide the lamp completely */
+#navbar.nav-suppressed #navbar-lamp {
     opacity: 0;
 }
 
