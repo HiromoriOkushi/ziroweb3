@@ -77,15 +77,22 @@ body {
     to { transform: scale(1.5); opacity: 0.4; }
 }
 
+/* --- START: JAVASCRIPT-CONTROLLED GLOW STYLE --- */
 .glow-spot {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--accent) 0%, rgba(0,191,255,0) 60%);
-    filter: blur(50px);
-    opacity: 1;
-    animation: longTwinkle ease-in-out;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, var(--accent) 25%, rgba(0,191,255,0) 70%);
+    filter: blur(60px);
     z-index: 2;
+    
+    /* Animation is now 100% controlled by JS for mathematical smoothness */
+    opacity: 0;
+    transform-origin: center center;
+
+    /* Performance optimization: hint to the browser what will be changing */
+    will-change: opacity, transform;
 }
+/* --- END: JAVASCRIPT-CONTROLLED GLOW STYLE --- */
 
 .mouse-glow {
     position: absolute;
@@ -101,13 +108,6 @@ body {
     z-index: 2;
 }
 
-@keyframes longTwinkle {
-    0%   { transform: scale(0.7); opacity: 0; }
-    20%  { opacity: 0.6;}
-    50%  { opacity: 1; }
-    70%  { opacity: 0.6; }
-    100% { transform: scale(1.1); opacity: 0; }
-}
 
 /* --- LAYOUT AND CONTENT --- */
 

@@ -15,32 +15,102 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.getElementById('header');
     const sparkleContainer = document.getElementById('sparkle-effect-container');
 
-    // Performance-Optimized Glow Logic
+    // --- START: NEW SINE-WAVE DRIVEN ANIMATION LOGIC ---
     if (sparkleContainer) {
-        const GLOW_POOL_SIZE = 10;
-        const triggerGlow = (glowElement) => {
-            const size = Math.random() * 300 + 250;
-            const duration = Math.random() * 10 ;
-            glowElement.style.width = `${size}px`;
-            glowElement.style.height = `${size}px`;
-            glowElement.style.top = `${Math.random() * 100}%`;
-            glowElement.style.left = `${Math.random() * 100}%`;
-            glowElement.style.animationDuration = `${duration}s`;
-            glowElement.style.animationName = 'none';
-            requestAnimationFrame(() => {
-                glowElement.style.animationName = 'longTwinkle';
-            });
-        };
-        for (let i = 0; i < GLOW_POOL_SIZE; i++) {
+        // --- Configuration ---
+        const GRID_COLUMNS = 4;
+        const GRID_ROWS = 3;
+        const TOTAL_ZONES = GRID_COLUMNS * GRID_ROWS;
+        const ANIMATION_DURATION = 3500; // 3.5 seconds in milliseconds
+
+        const glowSpots = [];
+        const zoneIndexes = Array.from({ length: TOTAL_ZONES }, (_, i) => i);
+        const activeGlows = [];
+
+        // --- Create a pool of 12 glow spot elements ---
+        for (let i = 0; i < TOTAL_ZONES; i++) {
             const glow = document.createElement('div');
             glow.className = 'glow-spot';
             sparkleContainer.appendChild(glow);
-            glow.addEventListener('animationend', () => {
-                setTimeout(() => triggerGlow(glow), Math.random() * 3000);
-            });
-            setTimeout(() => triggerGlow(glow), Math.random() * 10000);
+            glowSpots.push(glow);
         }
+
+        // --- The main animation loop ---
+        const animateGlows = (currentTime) => {
+            for (let i = activeGlows.length - 1; i >= 0; i--) {
+                const glow = activeGlows[i];
+                const elapsed = currentTime - glow.startTime;
+
+                if (elapsed >= ANIMATION_DURATION) {
+                    // Animation is over, remove it from the active list
+                    glow.element.style.opacity = 0;
+                    activeGlows.splice(i, 1);
+                    continue;
+                }
+
+                // Calculate progress as a value from 0 to 1
+                const progress = elapsed / ANIMATION_DURATION;
+                
+                // The core of the effect: Math.sin() from 0 to PI gives a perfect 0 -> 1 -> 0 curve.
+                const sineValue = Math.sin(progress * Math.PI);
+
+                // Apply the sine wave to opacity and scale
+                const currentOpacity = sineValue * 0.9; // Max opacity of 0.9 for a softer feel
+                const currentScale = 1 + sineValue * 0.15; // Pulse from 100% to 115% scale
+                
+                glow.element.style.opacity = currentOpacity;
+                glow.element.style.transform = `scale(${currentScale})`;
+            }
+
+            // Keep the loop running
+            requestAnimationFrame(animateGlows);
+        };
+
+        // --- The function to trigger a new wave of lights ---
+        const triggerWave = () => {
+            let availableZones = [...zoneIndexes];
+            for (let i = availableZones.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [availableZones[i], availableZones[j]] = [availableZones[j], availableZones[i]];
+            }
+
+            const numToActivate = Math.floor(Math.random() * 3) + 3;
+            const zonesForThisWave = availableZones.slice(0, numToActivate);
+
+            zonesForThisWave.forEach(zoneIndex => {
+                const glowSpot = glowSpots[zoneIndex];
+
+                const zoneWidth = 100 / GRID_COLUMNS;
+                const zoneHeight = 100 / GRID_ROWS;
+                const col = zoneIndex % GRID_COLUMNS;
+                const row = Math.floor(zoneIndex / GRID_COLUMNS);
+                const jitterX = (Math.random() - 0.5) * zoneWidth * 0.5;
+                const jitterY = (Math.random() - 0.5) * zoneHeight * 0.5;
+                const posX = col * zoneWidth + zoneWidth / 2 + jitterX;
+                const posY = row * zoneHeight + zoneHeight / 2 + jitterY;
+
+                const size = Math.random() * 350 + 300;
+                glowSpot.style.width = `${size}px`;
+                glowSpot.style.height = `${size}px`;
+                glowSpot.style.left = `${posX}%`;
+                glowSpot.style.top = `${posY}%`;
+
+                // Add this spot to the list of actively animating glows
+                activeGlows.push({
+                    element: glowSpot,
+                    startTime: performance.now()
+                });
+            });
+
+            // Schedule the next wave
+            setTimeout(triggerWave, ANIMATION_DURATION);
+        };
+
+        // --- Start the animation loop and the first wave ---
+        requestAnimationFrame(animateGlows);
+        triggerWave();
     }
+    // --- END: SINE-WAVE DRIVEN ANIMATION LOGIC ---
     
     // Mouse-Following Glow Logic
     if (sparkleContainer) {
@@ -96,10 +166,28 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
-            if (lenis && targetId) { lenis.scrollTo(targetId); } 
-            else if (targetId) {
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) { targetElement.scrollIntoView({ behavior: 'smooth' }); }
+            const targetElement = document.querySelector(targetId);
+    
+            if (targetElement) {
+                // The height of the top blur is '10rem'. We convert this to pixels for the offset.
+                const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                const offset = 10 * remInPixels;
+    
+                if (lenis) {
+                    // For Lenis, a negative offset stops the scroll *before* the target element.
+                    // This leaves a 10rem space at the top, preventing the blur from covering the header.
+                    lenis.scrollTo(targetElement, { offset: -offset });
+                } else {
+                    // Fallback for when Lenis isn't available.
+                    // We manually calculate the target scroll position minus the offset.
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
             }
         });
     });
