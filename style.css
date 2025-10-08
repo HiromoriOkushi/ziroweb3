@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display.swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
     --background: #050505;
@@ -77,22 +77,17 @@ body {
     to { transform: scale(1.5); opacity: 0.4; }
 }
 
-/* --- START: JAVASCRIPT-CONTROLLED GLOW STYLE --- */
+/* --- JAVASCRIPT-CONTROLLED GLOW STYLE --- */
 .glow-spot {
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, var(--accent) 25%, rgba(0,191,255,0) 70%);
     filter: blur(60px);
     z-index: 2;
-    
-    /* Animation is now 100% controlled by JS for mathematical smoothness */
     opacity: 0;
     transform-origin: center center;
-
-    /* Performance optimization: hint to the browser what will be changing */
     will-change: opacity, transform;
 }
-/* --- END: JAVASCRIPT-CONTROLLED GLOW STYLE --- */
 
 .mouse-glow {
     position: absolute;
@@ -148,16 +143,20 @@ body {
     transform: translateY(-2px);
 }
 
+/* --- EDITED: RESTORED FROSTED GLASS STYLE TO THE STATIC CARDS --- */
 .card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    position: relative;
+    background-color: hsla(0, 0%, 100%, 0.1);
+    border: 1px solid hsla(0, 0%, 100%, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 0.75rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0 20px 0 var(--accent-glow);
+    transform: translateY(-4px); 
+    background-color: hsla(0, 0%, 100%, 0.15);
     border-color: var(--accent);
 }
 
@@ -197,11 +196,16 @@ body {
     padding-bottom: 50vh;
 }
 
-.scroll-stack-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+/* --- DEDICATED GLASS SHADER FOR STACKING ANIMATION --- */
+.scroll-stack-glass {
+    /* Visual Shader Properties */
+    background-color: hsla(0, 0%, 100%, 0.05);
+    border: 1px solid hsla(0, 0%, 100%, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 40px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    
+    /* Functional Animation Properties */
     transform-origin: top center;
     will-change: transform, filter;
     backface-visibility: hidden;

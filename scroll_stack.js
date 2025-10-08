@@ -178,7 +178,8 @@ const setupLenis = () => {
 export function initScrollStack(options = {}) {
     Object.assign(config, options);
 
-    cards = Array.from(document.querySelectorAll('.scroll-stack-card'));
+    // EDITED: Changed selector to the new '.scroll-stack-glass' class
+    cards = Array.from(document.querySelectorAll('.scroll-stack-glass'));
     
     if (cards.length === 0) {
         return;
