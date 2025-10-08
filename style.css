@@ -221,6 +221,7 @@ body {
 .nav-icon { display: block; }
 .nav-icon svg { width: 1.125rem; height: 1.125rem; stroke-width: 2.5px; }
 
+
 @media (min-width: 768px) {
     .nav-text { display: block; }
     .nav-icon { display: none; }

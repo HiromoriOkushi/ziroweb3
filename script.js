@@ -74,54 +74,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // --- DEFINITIVE NAVBAR LOGIC ---
+    // --- NEW UNIFIED NAVBAR LOGIC ---
     const navbar = document.getElementById('navbar');
     const navLinks = document.querySelectorAll('.navbar-link');
     const navLamp = document.getElementById('navbar-lamp');
-    const contentSections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
 
-    // Observer 1: Watches the hero area to suppress nav styling
-    const heroAreaObserver = new IntersectionObserver((entries) => {
-        // If ANY of the observed hero sections are visible, suppress the nav styles.
-        const isHeroAreaVisible = entries.some(entry => entry.isIntersecting);
-        navbar.classList.toggle('nav-suppressed', isHeroAreaVisible);
-    }, { threshold: 0.01 }); // A low threshold ensures it triggers as soon as any part is visible
-
-    const imageHeroSection = document.getElementById('image-hero');
-    const textHeroSection = document.getElementById('hero');
-    if (imageHeroSection) heroAreaObserver.observe(imageHeroSection);
-    if (textHeroSection) heroAreaObserver.observe(textHeroSection);
-
-    // Observer 2: Watches the content sections to determine the active link
-    const visibleSections = new Map();
-    const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            visibleSections.set(entry.target.id, entry.intersectionRatio);
-        });
-        
-        let maxRatio = 0;
-        let mostVisibleId = null;
-        visibleSections.forEach((ratio, id) => {
-            if (ratio > maxRatio) {
-                maxRatio = ratio;
-                mostVisibleId = id;
-            }
-        });
-
-        if (mostVisibleId) {
-            navLinks.forEach(link => {
-                const isActive = link.getAttribute('href') === `#${mostVisibleId}`;
-                link.classList.toggle('active', isActive);
-                if (isActive) {
-                    updateLampPosition(link);
-                }
-            });
-        }
-    }, { threshold: Array.from({ length: 21 }, (_, i) => i * 0.05) }); // 20 steps is enough
-    
-    contentSections.forEach(section => {
-        if (section) sectionObserver.observe(section);
-    });
+    // Step 1: Create a single, ordered array of all sections.
+    const allSections = [
+        document.getElementById('image-hero'),
+        document.getElementById('hero'),
+        document.getElementById('problem'),
+        document.getElementById('why'),
+        document.getElementById('what'),
+        document.getElementById('how'),
+        document.getElementById('use-cases'),
+        document.getElementById('tech'),
+        document.getElementById('roadmap'),
+        document.getElementById('join')
+    ].filter(Boolean); // Filter out any nulls if an ID doesn't exist
 
     const updateLampPosition = (activeLink) => {
         if (!activeLink || !navLamp) return;
@@ -132,16 +102,60 @@ document.addEventListener('DOMContentLoaded', () => {
         navLamp.style.transform = `translateX(${offsetX}px)`;
     };
 
-    if (lenis) {
-        lenis.on('scroll', (e) => {
-            if (sparkleContainer) sparkleContainer.style.maskPosition = `0px ${e.scroll * 0.3}px`;
-            handleHeroFade(e.scroll);
+    // Step 2: Create a single function to manage the navbar's entire state.
+    const updateNavbarState = () => {
+        const triggerPoint = window.innerHeight * 0.3; // Highlight triggers 30% from the top
+        let latestActiveIndex = -1; // -1 means no section is active yet
+
+        // Find the index of the current section
+        allSections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            // If the section's top has passed the trigger point, it's a candidate
+            if (rect.top <= triggerPoint) {
+                latestActiveIndex = index;
+            }
         });
+
+        // Step 3: Apply the master rules based on the active index
+        // The first two sections (index 0 and 1) are the hero sections
+        if (latestActiveIndex < 2) {
+            // RULE 1: We are in a hero section. Suppress the navbar.
+            navbar.classList.add('nav-suppressed');
+            // Ensure no links are marked as active
+            navLinks.forEach(link => link.classList.remove('active'));
+        } else {
+            // RULE 2: We are in a content section. Activate the navbar.
+            navbar.classList.remove('nav-suppressed');
+            const activeSection = allSections[latestActiveIndex];
+            if (!activeSection) return;
+
+            // Highlight the correct link
+            navLinks.forEach(link => {
+                const targetId = link.getAttribute('href').substring(1);
+                const isActive = targetId === activeSection.id;
+                link.classList.toggle('active', isActive);
+                if (isActive) {
+                    updateLampPosition(link);
+                }
+            });
+        }
+    };
+
+    // --- SIMPLIFIED SCROLL HANDLER ---
+    const handleScroll = (scrollValue) => {
+        if (sparkleContainer) sparkleContainer.style.maskPosition = `0px ${scrollValue * 0.3}px`;
+        handleHeroFade(scrollValue);
+        updateNavbarState(); // Call our single, unified function
+    };
+
+    if (lenis) {
+        lenis.on('scroll', (e) => handleScroll(e.scroll));
     } else {
-        window.addEventListener('scroll', () => handleHeroFade(window.scrollY));
+        window.addEventListener('scroll', () => handleScroll(window.scrollY));
     }
     
-    handleHeroFade(window.scrollY);
+    // Initial call on page load to set the correct starting state.
+    handleScroll(window.scrollY);
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
