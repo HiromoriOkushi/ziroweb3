@@ -14,7 +14,50 @@
 </head>
 <body class="bg-background text-text-primary antialiased">
 
-    <!-- NEW: Unified container for all background effects -->
+    <!-- EDITED: New Navigation Bar -->
+    <nav id="navbar" class="fixed top-0 left-1/2 -translate-x-1/2 z-50 pt-6">
+        <div class="navbar-inner flex items-center gap-2 bg-background/5 border border-border backdrop-blur-lg p-1 rounded-full shadow-lg">
+            <!-- The animated "lamp" that slides between active items -->
+            <div id="navbar-lamp">
+                <div class="lamp-glow-top"></div>
+            </div>
+
+            <a href="#problem" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="alert-triangle"></span></span>
+                <span class="nav-text">Problem</span>
+            </a>
+            <a href="#why" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="help-circle"></span></span>
+                <span class="nav-text">Why</span>
+            </a>
+            <a href="#what" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="package"></span></span>
+                <span class="nav-text">What</span>
+            </a>
+            <a href="#how" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="wrench"></span></span>
+                <span class="nav-text">How</span>
+            </a>
+            <a href="#use-cases" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="briefcase"></span></span>
+                <span class="nav-text">Use Cases</span>
+            </a>
+            <a href="#tech" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="cpu"></span></span>
+                <span class="nav-text">Tech</span>
+            </a>
+            <a href="#roadmap" class="navbar-link">
+                <span class="nav-icon"><span data-lucide="map"></span></span>
+                <span class="nav-text">Roadmap</span>
+            </a>
+            <a href="#join" class="navbar-cta-button text-sm font-semibold px-4 py-2 rounded-full">
+                Join
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- Background Effects Container -->
     <div id="background-container">
         <div id="particles-bg"></div>
         <div id="sparkle-effect-container"></div>
@@ -22,24 +65,6 @@
 
     <div id="top-blur"></div>
     <div id="bottom-blur"></div>
-
-    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#hero" class="text-2xl font-bold tracking-tighter">Ziro</a>
-            <div class="flex items-center space-x-6">
-                <div class="hidden md:flex items-center space-x-6 text-sm">
-                    <a href="#problem" class="hover:text-accent transition-colors">Problem</a>
-                    <a href="#why" class="hover:text-accent transition-colors">Why</a>
-                    <a href="#what" class="hover:text-accent transition-colors">What</a>
-                    <a href="#how" class="hover:text-accent transition-colors">How</a>
-                    <a href="#use-cases" class="hover:text-accent transition-colors">Use Cases</a>
-                    <a href="#tech" class="hover:text-accent transition-colors">Tech</a>
-                    <a href="#roadmap" class="hover:text-accent transition-colors">Roadmap</a>
-                </div>
-                <a href="#join" class="cta-button text-sm font-semibold px-4 py-2 rounded-md">Join Waitlist</a>
-            </div>
-        </nav>
-    </header>
 
     <!-- Main Page Content -->
     <div id="page-content">
@@ -86,7 +111,6 @@
                     <div class="sticky-header text-center max-w-3xl mx-auto scroll-reveal">
                         <h2 id="why" class="text-3xl md:text-4xl font-bold tracking-tight">Your Tools Are 40-Year-Old Architecture With AI Duct-Taped On</h2>
                     </div>
-                    <!-- EDITED: Using the new .scroll-stack-glass class -->
                     <div class="max-w-4xl mx-auto">
                         <div class="scroll-stack-glass p-12">
                             <p><strong class="text-text-primary">Microsoft Office / Google Docs:</strong> <span class="text-text-secondary">Static files. AI writes text in a sidebar. Your document and the AI live in different worlds.</span></p>
@@ -290,7 +314,7 @@
             </section>
 
             <!-- Section 9: Join -->
-            <section class="py-16 md:py-24">
+            <section id="join" class="py-16 md:py-24">
                 <div class="container mx-auto px-6 text-center max-w-2xl scroll-reveal">
                     <h2 id="join" class="text-3xl md:text-4xl font-bold tracking-tight mb-4">The Age of Static Documents Is Ending</h2>
                     <p class="text-text-secondary mb-8">Design partner program opens Q1 2025. Be first in line.</p>
@@ -330,9 +354,9 @@
             new GradualBlur('#top-blur', {
                 target: 'page',
                 position: 'top',
-                strength: 3,
-                height: '7rem',
-                divCount: 10,
+                strength: 5,
+                height: '10rem',
+                divCount: 7,
                 curve: 'ease-in',
                 zIndex: 40
             });
@@ -340,7 +364,7 @@
                 target: 'page',
                 position: 'bottom',
                 strength: 3,
-                height: '6rem',
+                height: '10rem',
                 divCount: 10,
                 curve: 'ease-in',
                 zIndex: 40

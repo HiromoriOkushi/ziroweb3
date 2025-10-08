@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display.swap');
 
 :root {
     --background: #050505;
@@ -27,7 +27,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Sits behind everything else */
+    z-index: 0;
     pointer-events: none;
     overflow: hidden;
 }
@@ -35,24 +35,23 @@ body {
 /* --- EFFECT LAYERS (Positioned inside the container) --- */
 
 #particles-bg {
-    position: absolute; /* Changed from fixed */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Furthest back layer inside the container */
+    z-index: 1;
 }
 
 #sparkle-effect-container {
-    position: absolute; /* Changed from fixed */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2; /* Sits on top of the particles */
-    position: relative; /* For layering internal pseudo-elements */
+    z-index: 2;
+    position: relative;
     background-color: rgba(255, 255, 255, 0.2);
-
     mask-image: url('sparkles.png');
     mask-size: 500px;
     mask-repeat: repeat;
@@ -108,20 +107,112 @@ body {
 
 #page-content {
     position: relative;
-    z-index: 3; /* Sits on top of the background container */
+    z-index: 3;
     background-color: transparent;
 }
 
-#header {
-    background-color: rgba(5, 5, 5, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease;
+/* --- NAVIGATION BAR STYLES --- */
+#navbar {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 50;
 }
 
-#header.scrolled {
-    border-bottom-color: var(--border-color);
+.navbar-inner {
+    position: relative;
+    background-color: rgba(17, 17, 17, 0.5);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar-link {
+    position: relative;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+    z-index: 2;
+}
+
+.navbar-link:hover {
+    color: var(--accent);
+}
+
+.navbar-link.active {
+    color: var(--accent);
+}
+
+.navbar-cta-button {
+    background-color: var(--accent);
+    color: var(--background);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-cta-button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+#navbar-lamp {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 191, 255, 0.1);
+    border-radius: 9999px;
+    z-index: 1;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.45, 0, 0.15, 1), width 0.4s cubic-bezier(0.45, 0, 0.15, 1), opacity 0.3s ease;
+}
+
+#navbar.hero-visible #navbar-lamp {
+    opacity: 0;
+}
+
+.lamp-glow-top {
+    position: absolute;
+    top: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2rem;
+    height: 0.25rem;
+    background-color: var(--accent);
+    border-radius: 9999px;
+}
+
+.lamp-glow-top::before, .lamp-glow-top::after {
+    content: '';
+    position: absolute;
+    background-color: var(--accent-glow);
+    border-radius: 9999px;
+    filter: blur(12px);
+}
+
+.lamp-glow-top::before {
+    width: 3rem;
+    height: 1.5rem;
+    top: -0.5rem;
+    left: -0.5rem;
+}
+
+.lamp-glow-top::after {
+    width: 2rem;
+    height: 1.5rem;
+    top: -0.25rem;
+    left: 0;
+}
+
+.nav-text { display: none; }
+.nav-icon { display: block; }
+.nav-icon svg { width: 1.125rem; height: 1.125rem; stroke-width: 2.5px; }
+
+@media (min-width: 768px) {
+    .nav-text { display: block; }
+    .nav-icon { display: none; }
+    .navbar-link { padding: 0.5rem 1rem; }
 }
 
 .gradient-text {
@@ -143,7 +234,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* --- EDITED: RESTORED FROSTED GLASS STYLE TO THE STATIC CARDS --- */
+/* --- STATIC FROSTED GLASS CARD STYLE --- */
 .card {
     position: relative;
     background-color: hsla(0, 0%, 100%, 0.1);
@@ -196,16 +287,12 @@ body {
     padding-bottom: 50vh;
 }
 
-/* --- DEDICATED GLASS SHADER FOR STACKING ANIMATION --- */
 .scroll-stack-glass {
-    /* Visual Shader Properties */
     background-color: hsla(0, 0%, 100%, 0.05);
     border: 1px solid hsla(0, 0%, 100%, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 40px;
-    
-    /* Functional Animation Properties */
     transform-origin: top center;
     will-change: transform, filter;
     backface-visibility: hidden;

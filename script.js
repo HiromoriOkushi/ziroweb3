@@ -12,198 +12,151 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const header = document.getElementById('header');
     const sparkleContainer = document.getElementById('sparkle-effect-container');
 
-    // --- START: NEW SINE-WAVE DRIVEN ANIMATION LOGIC ---
+    // SINE-WAVE DRIVEN ANIMATION LOGIC
     if (sparkleContainer) {
-        // --- Configuration ---
-        const GRID_COLUMNS = 4;
-        const GRID_ROWS = 3;
-        const TOTAL_ZONES = GRID_COLUMNS * GRID_ROWS;
-        const ANIMATION_DURATION = 3500; // 3.5 seconds in milliseconds
-
-        const glowSpots = [];
-        const zoneIndexes = Array.from({ length: TOTAL_ZONES }, (_, i) => i);
-        const activeGlows = [];
-
-        // --- Create a pool of 12 glow spot elements ---
-        for (let i = 0; i < TOTAL_ZONES; i++) {
-            const glow = document.createElement('div');
-            glow.className = 'glow-spot';
-            sparkleContainer.appendChild(glow);
-            glowSpots.push(glow);
-        }
-
-        // --- The main animation loop ---
-        const animateGlows = (currentTime) => {
+        const GRID_COLUMNS = 4, GRID_ROWS = 3, TOTAL_ZONES = GRID_COLUMNS * GRID_ROWS, ANIMATION_DURATION = 3500;
+        const glowSpots = [], zoneIndexes = Array.from({ length: TOTAL_ZONES }, (_, i) => i), activeGlows = [];
+        for (let i = 0; i < TOTAL_ZONES; i++) { const glow = document.createElement('div'); glow.className = 'glow-spot'; sparkleContainer.appendChild(glow); glowSpots.push(glow); }
+        const animateGlows = (t) => {
             for (let i = activeGlows.length - 1; i >= 0; i--) {
-                const glow = activeGlows[i];
-                const elapsed = currentTime - glow.startTime;
-
-                if (elapsed >= ANIMATION_DURATION) {
-                    // Animation is over, remove it from the active list
-                    glow.element.style.opacity = 0;
-                    activeGlows.splice(i, 1);
-                    continue;
-                }
-
-                // Calculate progress as a value from 0 to 1
-                const progress = elapsed / ANIMATION_DURATION;
-                
-                // The core of the effect: Math.sin() from 0 to PI gives a perfect 0 -> 1 -> 0 curve.
-                const sineValue = Math.sin(progress * Math.PI);
-
-                // Apply the sine wave to opacity and scale
-                const currentOpacity = sineValue * 0.9; // Max opacity of 0.9 for a softer feel
-                const currentScale = 1 + sineValue * 0.15; // Pulse from 100% to 115% scale
-                
-                glow.element.style.opacity = currentOpacity;
-                glow.element.style.transform = `scale(${currentScale})`;
+                const g = activeGlows[i], e = t - g.startTime;
+                if (e >= ANIMATION_DURATION) { g.element.style.opacity = 0; activeGlows.splice(i, 1); continue; }
+                const p = e / ANIMATION_DURATION, s = Math.sin(p * Math.PI);
+                g.element.style.opacity = s * 0.9; g.element.style.transform = `scale(${1 + s * 0.15})`;
             }
-
-            // Keep the loop running
             requestAnimationFrame(animateGlows);
         };
-
-        // --- The function to trigger a new wave of lights ---
         const triggerWave = () => {
-            let availableZones = [...zoneIndexes];
-            for (let i = availableZones.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [availableZones[i], availableZones[j]] = [availableZones[j], availableZones[i]];
-            }
-
-            const numToActivate = Math.floor(Math.random() * 3) + 3;
-            const zonesForThisWave = availableZones.slice(0, numToActivate);
-
-            zonesForThisWave.forEach(zoneIndex => {
-                const glowSpot = glowSpots[zoneIndex];
-
-                const zoneWidth = 100 / GRID_COLUMNS;
-                const zoneHeight = 100 / GRID_ROWS;
-                const col = zoneIndex % GRID_COLUMNS;
-                const row = Math.floor(zoneIndex / GRID_COLUMNS);
-                const jitterX = (Math.random() - 0.5) * zoneWidth * 0.5;
-                const jitterY = (Math.random() - 0.5) * zoneHeight * 0.5;
-                const posX = col * zoneWidth + zoneWidth / 2 + jitterX;
-                const posY = row * zoneHeight + zoneHeight / 2 + jitterY;
-
-                const size = Math.random() * 350 + 300;
-                glowSpot.style.width = `${size}px`;
-                glowSpot.style.height = `${size}px`;
-                glowSpot.style.left = `${posX}%`;
-                glowSpot.style.top = `${posY}%`;
-
-                // Add this spot to the list of actively animating glows
-                activeGlows.push({
-                    element: glowSpot,
-                    startTime: performance.now()
-                });
+            let a = [...zoneIndexes];
+            for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+            const n = Math.floor(Math.random() * 3) + 3, z = a.slice(0, n);
+            z.forEach(i => {
+                const g = glowSpots[i], w = 100 / GRID_COLUMNS, h = 100 / GRID_ROWS, c = i % GRID_COLUMNS, r = Math.floor(i / GRID_COLUMNS);
+                const jX = (Math.random() - 0.5) * w * 0.5, jY = (Math.random() - 0.5) * h * 0.5;
+                const pX = c * w + w / 2 + jX, pY = r * h + h / 2 + jY, s = Math.random() * 350 + 300;
+                g.style.width = `${s}px`; g.style.height = `${s}px`; g.style.left = `${pX}%`; g.style.top = `${pY}%`;
+                activeGlows.push({ element: g, startTime: performance.now() });
             });
-
-            // Schedule the next wave
             setTimeout(triggerWave, ANIMATION_DURATION);
         };
-
-        // --- Start the animation loop and the first wave ---
         requestAnimationFrame(animateGlows);
         triggerWave();
     }
-    // --- END: SINE-WAVE DRIVEN ANIMATION LOGIC ---
     
     // Mouse-Following Glow Logic
     if (sparkleContainer) {
-        const mouseGlow = document.createElement('div');
-        mouseGlow.className = 'mouse-glow';
-        sparkleContainer.appendChild(mouseGlow);
-
-        let isMouseGlowActive = false;
-
+        const mouseGlow = document.createElement('div'); mouseGlow.className = 'mouse-glow'; sparkleContainer.appendChild(mouseGlow);
+        let isActive = false;
         window.addEventListener('mousemove', (e) => {
-            if (!isMouseGlowActive) {
-                mouseGlow.style.opacity = '1';
-                isMouseGlowActive = true;
-            }
-            const x = e.clientX - 150;
-            const y = e.clientY - 150;
-            mouseGlow.style.transform = `translate(${x}px, ${y}px)`;
+            if (!isActive) { mouseGlow.style.opacity = '1'; isActive = true; }
+            mouseGlow.style.transform = `translate(${e.clientX - 150}px, ${e.clientY - 150}px)`;
         });
-
-        document.body.addEventListener('mouseleave', () => {
-            mouseGlow.style.opacity = '0';
-            isMouseGlowActive = false;
-        });
+        document.body.addEventListener('mouseleave', () => { mouseGlow.style.opacity = '0'; isActive = false; });
     }
 
     const lenis = initScrollStack({
-        itemDistance: 45,
-        itemScale: 0.03,
-        itemStackDistance: 30,
-        stackPosition: '30%',
-        scaleEndPosition: '20%',
-        baseScale: 0.75,
-        rotationAmount: 0,
-        blurAmount: 0.5,
-        onStackComplete: () => { console.log('Stack animation completed!'); }
+        itemDistance: 45, itemScale: 0.03, itemStackDistance: 30, stackPosition: '30%',
+        scaleEndPosition: '20%', baseScale: 0.75, rotationAmount: 0, blurAmount: 0.5,
+        onStackComplete: () => console.log('Stack animation completed!')
+    });
+    
+    // --- EDITED: NEW ROBUST NAVBAR LOGIC ---
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.querySelectorAll('.navbar-link');
+    const navLamp = document.getElementById('navbar-lamp');
+    const sections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+
+    // Observer for Hero Section
+    const heroSection = document.getElementById('hero');
+    const heroObserver = new IntersectionObserver(([entry]) => {
+        navbar.classList.toggle('hero-visible', entry.isIntersecting);
+    }, { threshold: 0.1 });
+    if (heroSection) heroObserver.observe(heroSection);
+
+    // Observer for content sections to determine the most visible
+    const visibleSections = new Map();
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            visibleSections.set(entry.target.id, entry.intersectionRatio);
+        });
+        
+        let maxRatio = 0;
+        let mostVisibleId = null;
+
+        visibleSections.forEach((ratio, id) => {
+            if (ratio > maxRatio) {
+                maxRatio = ratio;
+                mostVisibleId = id;
+            }
+        });
+
+        if (mostVisibleId) {
+            navLinks.forEach(link => {
+                // CORRECTED SYNTAX ERROR HERE
+                const isActive = link.getAttribute('href') === `#${mostVisibleId}`;
+                link.classList.toggle('active', isActive);
+                if (isActive) {
+                    updateLampPosition(link);
+                }
+            });
+        }
+    }, { threshold: Array.from({ length: 51 }, (_, i) => i / 50) }); // Use 50 steps for good precision without being excessive
+
+    sections.forEach(section => {
+        if (section) sectionObserver.observe(section);
     });
 
+    const updateLampPosition = (activeLink) => {
+        if (!activeLink || !navLamp) return;
+        const navRect = navLamp.parentElement.getBoundingClientRect();
+        const linkRect = activeLink.getBoundingClientRect();
+        const offsetX = linkRect.left - navRect.left;
+        navLamp.style.width = `${linkRect.width}px`;
+        navLamp.style.transform = `translateX(${offsetX}px)`;
+    };
+
+    // Main scroll handler
     if (lenis) {
         lenis.on('scroll', (e) => {
-            if (e.scroll > 50) { header.classList.add('scrolled'); } 
-            else { header.classList.remove('scrolled'); }
-
-            if (sparkleContainer) {
-                const yOffset = e.scroll * 0.3;
-                const newPosition = `0px ${yOffset}px`;
-                sparkleContainer.style.maskPosition = newPosition;
-                sparkleContainer.style.webkitMaskPosition = newPosition;
-            }
+            if (sparkleContainer) sparkleContainer.style.maskPosition = `0px ${e.scroll * 0.3}px`;
         });
     }
-    
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+
+    // Handle clicks
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
+            updateLampPosition(this); 
             const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-    
-            if (targetElement) {
-                // The height of the top blur is '10rem'. We convert this to pixels for the offset.
-                const remInPixels = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                const offset = 10 * remInPixels;
-    
-                if (lenis) {
-                    // For Lenis, a negative offset stops the scroll *before* the target element.
-                    // This leaves a 10rem space at the top, preventing the blur from covering the header.
-                    lenis.scrollTo(targetElement, { offset: -offset });
-                } else {
-                    // Fallback for when Lenis isn't available.
-                    // We manually calculate the target scroll position minus the offset.
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - offset;
-    
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
-                }
-            }
+            if (lenis) lenis.scrollTo(targetId, { offset: -10 * 16 }); // 10rem offset
         });
     });
+
+    document.querySelector('.navbar-cta-button').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (lenis) lenis.scrollTo("#join");
+    });
+    
+    // Initial state check
+    setTimeout(() => {
+        const activeLink = document.querySelector('.navbar-link.active');
+        if (activeLink) {
+            updateLampPosition(activeLink);
+        }
+    }, 200);
+    // --- END OF NAVBAR LOGIC ---
 
     const waitlistForm = document.getElementById('waitlist-form');
     if (waitlistForm) {
+        // ... (This section is unchanged)
         waitlistForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const emailInput = document.getElementById('email-input');
-            const messageEl = document.getElementById('form-message');
-            const email = emailInput.value;
-            const emailRegex = /^\S+@\S+\.\S+$/;
-            if (email && emailRegex.test(email)) {
+            const emailInput = document.getElementById('email-input'), messageEl = document.getElementById('form-message'), email = emailInput.value;
+            if (email && /^\S+@\S+\.\S+$/.test(email)) {
                 messageEl.textContent = 'Thank you! You have been added to the waitlist.';
-                messageEl.className = 'text-green-400 mt-4 h-6';
-                emailInput.value = '';
+                messageEl.className = 'text-green-400 mt-4 h-6'; emailInput.value = '';
                 setTimeout(() => { messageEl.textContent = ''; }, 5000);
             } else {
                 messageEl.textContent = 'Please enter a valid email address.';
@@ -215,11 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.scroll-reveal').forEach(element => {
         inView(element, () => {
-            animate(
-                element,
-                { opacity: 1, y: 0 },
-                { duration: 0.7, delay: 0.1, ease: [0.25, 1, 0.5, 1] }
-            );
+            animate(element, { opacity: 1, y: 0 }, { duration: 0.7, delay: 0.1, ease: [0.25, 1, 0.5, 1] });
         }, { amount: 0.2, once: true });
     });
 });
