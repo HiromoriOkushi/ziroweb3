@@ -238,15 +238,34 @@ body {
     left: 0;
 }
 
-.nav-text { display: none; }
-.nav-icon { display: block; }
+/* --- Mobile-First Navigation Styles --- */
+/* By default (mobile), hide the lamp and text labels, and show icons */
+#navbar-lamp,
+.nav-text {
+    display: none;
+}
+
+.nav-icon {
+    display: block;
+}
 .nav-icon svg { width: 1.125rem; height: 1.125rem; stroke-width: 2.5px; }
 
 
+/* --- Desktop Overrides --- */
+/* On screens 768px and wider, show the lamp and swap icons for text */
 @media (min-width: 768px) {
-    .nav-text { display: block; }
-    .nav-icon { display: none; }
-    .navbar-link { padding: 0.5rem 1rem; }
+    #navbar-lamp {
+        display: block;
+    }
+    .nav-text {
+        display: block;
+    }
+    .nav-icon {
+        display: none;
+    }
+    .navbar-link {
+        padding: 0.5rem 1rem;
+    }
 }
 
 .gradient-text {
@@ -342,14 +361,3 @@ body {
   width: 100%;
   height: 1px;
 }
-
-/* --- START: Mobile Navigation Overrides --- */
-@media (max-width: 767px) {
-    
-    /* On mobile, hide the main navigation links and the sliding lamp indicator */
-    .navbar-links-container,
-    #navbar-lamp {
-        display: none;
-    }
-}
-/* --- END: Mobile Navigation Overrides --- */
