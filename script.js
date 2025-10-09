@@ -185,19 +185,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const waitlistForm = document.getElementById('waitlist-form');
     if (waitlistForm) {
+        // --- START: NEW AND FINAL WAITLIST FORM LOGIC ---
         waitlistForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('email-input'), messageEl = document.getElementById('form-message'), email = emailInput.value;
-            if (email && /^\S+@\S+\.\S+$/.test(email)) {
-                messageEl.textContent = 'Thank you! You have been added to the waitlist.';
-                messageEl.className = 'text-green-400 mt-4 h-6'; emailInput.value = '';
-                setTimeout(() => { messageEl.textContent = ''; }, 5000);
-            } else {
+            e.preventDefault(); // Prevent the default form submission
+
+            const emailInput = document.getElementById('email-input');
+            const messageEl = document.getElementById('form-message');
+            const submitButton = waitlistForm.querySelector('button[type="submit"]');
+            const email = emailInput.value;
+
+            // --- Paste your NEW Web App URL here ---
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxgloVT_8j0-d7xq2xTpu4XIkiBRzuIaRFaNZVIhUhB5I-KdFkYifDhHSpUZTyxRLIjCQ/exec'; 
+
+            // Basic email validation
+            if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
                 messageEl.textContent = 'Please enter a valid email address.';
                 messageEl.className = 'text-red-400 mt-4 h-6';
                 setTimeout(() => { messageEl.textContent = ''; }, 3000);
+                return;
             }
+
+            // Disable the button and show a submitting message
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            messageEl.textContent = '';
+
+            // Create a FormData object to send the data
+            const formData = new FormData();
+            // The key 'Email' MUST match the header in your Google Sheet
+            formData.append('Email', email);
+
+            // Send the data using fetch
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'cors',
+                body: formData // We are now sending FormData, not JSON
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    messageEl.textContent = 'Thank you! You have been added to the waitlist.';
+                    messageEl.className = 'text-green-400 mt-4 h-6';
+                    emailInput.value = ''; // Clear the input field
+                } else {
+                    // Pass the error from the backend if it exists
+                    throw new Error(data.error ? JSON.stringify(data.error) : 'An unknown error occurred.');
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                messageEl.textContent = 'Something went wrong. Please try again.';
+                messageEl.className = 'text-red-400 mt-4 h-6';
+            })
+            .finally(() => {
+                // Re-enable the button and clear the message after a delay
+                setTimeout(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Join Waitlist';
+                    messageEl.textContent = '';
+                }, 5000);
+            });
         });
+        // --- END: NEW AND FINAL WAITLIST FORM LOGIC ---
     }
 
     document.querySelectorAll('.scroll-reveal').forEach(element => {
