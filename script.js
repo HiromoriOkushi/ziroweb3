@@ -74,12 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // --- NEW UNIFIED NAVBAR LOGIC ---
+    // --- UNIFIED NAVBAR LOGIC ---
     const navbar = document.getElementById('navbar');
     const navLinks = document.querySelectorAll('.navbar-link');
     const navLamp = document.getElementById('navbar-lamp');
+    const navbarLogo = document.getElementById('navbar-logo'); // Get the logo element
 
-    // Step 1: Create a single, ordered array of all sections.
+    // Create a single, ordered array of all sections.
     const allSections = [
         document.getElementById('image-hero'),
         document.getElementById('hero'),
@@ -91,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('tech'),
         document.getElementById('roadmap'),
         document.getElementById('join')
-    ].filter(Boolean); // Filter out any nulls if an ID doesn't exist
+    ].filter(Boolean);
 
     const updateLampPosition = (activeLink) => {
         if (!activeLink || !navLamp) return;
@@ -102,34 +103,38 @@ document.addEventListener('DOMContentLoaded', () => {
         navLamp.style.transform = `translateX(${offsetX}px)`;
     };
 
-    // Step 2: Create a single function to manage the navbar's entire state.
+    // The single function to manage the navbar's entire state.
     const updateNavbarState = () => {
-        const triggerPoint = window.innerHeight * 0.3; // Highlight triggers 30% from the top
-        let latestActiveIndex = -1; // -1 means no section is active yet
+        const triggerPoint = window.innerHeight * 0.3;
+        let latestActiveIndex = -1;
 
-        // Find the index of the current section
         allSections.forEach((section, index) => {
             const rect = section.getBoundingClientRect();
-            // If the section's top has passed the trigger point, it's a candidate
             if (rect.top <= triggerPoint) {
                 latestActiveIndex = index;
             }
         });
 
-        // Step 3: Apply the master rules based on the active index
-        // The first two sections (index 0 and 1) are the hero sections
+        // NEW: Logic for fading the navbar logo in/out based on the index
+        if (latestActiveIndex >= 1) {
+            // We are past the main image hero (index 0), so show the logo.
+            navbarLogo.classList.add('logo-visible');
+        } else {
+            // We are on the main image hero, so hide the logo.
+            navbarLogo.classList.remove('logo-visible');
+        }
+
+        // Apply master rules for suppression and highlighting
         if (latestActiveIndex < 2) {
-            // RULE 1: We are in a hero section. Suppress the navbar.
+            // We are in a hero section (index 0 or 1). Suppress the navbar.
             navbar.classList.add('nav-suppressed');
-            // Ensure no links are marked as active
             navLinks.forEach(link => link.classList.remove('active'));
         } else {
-            // RULE 2: We are in a content section. Activate the navbar.
+            // We are in a content section. Activate the navbar.
             navbar.classList.remove('nav-suppressed');
             const activeSection = allSections[latestActiveIndex];
             if (!activeSection) return;
 
-            // Highlight the correct link
             navLinks.forEach(link => {
                 const targetId = link.getAttribute('href').substring(1);
                 const isActive = targetId === activeSection.id;
