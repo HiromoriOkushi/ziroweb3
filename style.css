@@ -132,6 +132,27 @@ body {
     -webkit-backdrop-filter: blur(12px);
 }
 
+/* --- NEW: Top-Left Corner Logo Styling --- */
+#navbar-logo {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 60; /* Place it above the navbar */
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+}
+
+#navbar-logo img {
+    height: 3rem; /* 32px, a good size for the corner */
+}
+
+#navbar-logo.logo-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+/* --- END: Top-Left Corner Logo Styling --- */
+
 .navbar-link {
     position: relative;
     cursor: pointer;
