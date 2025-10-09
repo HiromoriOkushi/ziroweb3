@@ -15,7 +15,7 @@
 <body class="bg-background text-text-primary antialiased">
 
     <!-- NEW: Fullscreen Image Hero -->
-§    <div id="image-hero" class="fixed top-0 left-0 w-full h-screen z-[100] bg-background flex items-center justify-center">
+    <div id="image-hero" class="fixed top-0 left-0 w-full h-screen z-[100] bg-background flex items-center justify-center">
         <!-- Make sure you have an image named 'ziro-logo.png' in your project folder -->
         <img src="ziro-logo.png" alt="Ziro Logo" class="w-3/4 max-w-4xl">
     </div>
@@ -34,34 +34,39 @@
                 <div class="lamp-glow-top"></div>
             </div>
 
-            <a href="#problem" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="alert-triangle"></span></span>
-                <span class="nav-text">Problem</span>
-            </a>
-            <a href="#why" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="help-circle"></span></span>
-                <span class="nav-text">Why</span>
-            </a>
-            <a href="#what" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="package"></span></span>
-                <span class="nav-text">What</span>
-            </a>
-            <a href="#how" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="wrench"></span></span>
-                <span class="nav-text">How</span>
-            </a>
-            <a href="#use-cases" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="briefcase"></span></span>
-                <span class="nav-text">Use Cases</span>
-            </a>
-            <a href="#tech" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="cpu"></span></span>
-                <span class="nav-text">Tech</span>
-            </a>
-            <a href="#roadmap" class="navbar-link">
-                <span class="nav-icon"><span data-lucide="map"></span></span>
-                <span class="nav-text">Roadmap</span>
-            </a>
+            <!-- START: This new container wraps the links we want to hide -->
+            <div class="navbar-links-container flex items-center gap-2">
+                <a href="#problem" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="alert-triangle"></span></span>
+                    <span class="nav-text">Problem</span>
+                </a>
+                <a href="#why" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="help-circle"></span></span>
+                    <span class="nav-text">Why</span>
+                </a>
+                <a href="#what" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="package"></span></span>
+                    <span class="nav-text">What</span>
+                </a>
+                <a href="#how" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="wrench"></span></span>
+                    <span class="nav-text">How</span>
+                </a>
+                <a href="#use-cases" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="briefcase"></span></span>
+                    <span class="nav-text">Use Cases</span>
+                </a>
+                <a href="#tech" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="cpu"></span></span>
+                    <span class="nav-text">Tech</span>
+                </a>
+                <a href="#roadmap" class="navbar-link">
+                    <span class="nav-icon"><span data-lucide="map"></span></span>
+                    <span class="nav-text">Roadmap</span>
+                </a>
+            </div>
+            <!-- END: Wrapper -->
+
             <a href="#join" class="navbar-cta-button text-sm font-semibold px-4 py-2 rounded-full">
                 Join
             </a>
