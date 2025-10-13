@@ -109,6 +109,10 @@ body {
     will-change: opacity;
 }
 
+#page-content footer {
+    padding-bottom: 8rem;
+}
+
 #page-content {
     position: relative;
     z-index: 3;
