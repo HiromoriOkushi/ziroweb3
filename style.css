@@ -4,9 +4,9 @@
     --background: #050505;
     --text-primary: #EAEAEA;
     --text-secondary: #A0A0A0;
-    --accent: #00BFFF;
+    --accent: #b09cff;
     --accent-secondary: #e60073;
-    --accent-hover: #00A6DD;
+    --accent-hover: #d99cff;
     --accent-glow: rgba(0, 191, 255, 0.2);
     --card-bg: #111111;
     --border-color: #222222;
@@ -299,7 +299,6 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
 }
 
 .cta-button {
@@ -328,6 +327,31 @@ body {
     background-color: hsla(0, 0%, 100%, 0.15);
     border-color: var(--accent);
 }
+
+/* --- NEW: Boxed Section Style --- */
+.boxed-section {
+    position: relative;
+    background-color: hsla(0, 0%, 100%, 0.05);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem; /* 16px */
+    padding: 3rem; /* 48px */
+    transition: border-color 0.3s ease;
+}
+
+.boxed-section:hover {
+    border-color: var(--accent);
+}
+
+/* --- NEW: Emphasized Section Endnote Style --- */
+.section-endnote {
+    font-size: 1.5rem; /* A tad bigger */
+    font-weight: 600;   /* Bolder */
+    color: var(--accent); /* Different color */
+    text-shadow: 0 0 12px var(--accent-glow); /* Add a glow to make it pop */
+}
+
 
 .numbered-list-item {
     font-size: 1.875rem;
