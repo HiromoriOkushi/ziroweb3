@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateNavbarState = () => {
         const triggerPoint = window.innerHeight * 0.3;
         let latestActiveIndex = -1;
-        const isDesktop = window.innerWidth >= 768;
+        const isDesktop = window.innerWidth >= 850;
 
         allSections.forEach((section, index) => {
             const rect = section.getBoundingClientRect();
