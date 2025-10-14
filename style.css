@@ -110,7 +110,7 @@ body {
 }
 
 #page-content footer {
-    padding-bottom: 8rem;
+    padding-bottom: 12rem;
 }
 
 #page-content {
@@ -353,7 +353,7 @@ body {
     transform-origin: top center;
     will-change: transform, filter;
     backface-visibility: hidden;
-    transform-style: preserve-3d;
+    transform-style: preserve-d;
     position: relative;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
@@ -376,4 +376,139 @@ body {
         opacity: 0;
         pointer-events: none;
     }
+}
+
+/* --- NEW: CSS GRADIENT BLUR --- */
+.gradient-blur {
+    position: fixed; /* REVERTED back to fixed */
+    z-index: 40;
+    pointer-events: none;
+    left: 0;
+    right: 0;
+}
+.gradient-blur.gradient-blur-bottom {
+    bottom: 0;
+    height: 12rem; /* EDITED: Set specific height */
+}
+.gradient-blur.gradient-blur-top {
+    top: 0;
+    height: 10rem; /* EDITED: Set specific height */
+}
+
+.gradient-blur > div,
+.gradient-blur::before,
+.gradient-blur::after {
+    position: absolute;
+    inset: 0;
+}
+
+.gradient-blur::before {
+    content: "";
+    z-index: 1;
+    backdrop-filter: blur(0.5px);
+    -webkit-backdrop-filter: blur(0.5px);
+}
+.gradient-blur > div:nth-of-type(1) {
+    z-index: 2;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+}
+.gradient-blur > div:nth-of-type(2) {
+    z-index: 3;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+.gradient-blur > div:nth-of-type(3) {
+    z-index: 4;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.gradient-blur > div:nth-of-type(4) {
+    z-index: 5;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.gradient-blur > div:nth-of-type(5) {
+    z-index: 6;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+.gradient-blur > div:nth-of-type(6) {
+    z-index: 7;
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+}
+.gradient-blur::after {
+    content: "";
+    z-index: 8;
+    backdrop-filter: blur(64px);
+    -webkit-backdrop-filter: blur(64px);
+}
+
+/* --- Masks for Bottom Blur --- */
+.gradient-blur-bottom::before {
+    mask: linear-gradient(to bottom, transparent 0%, black 12.5%, black 25%, transparent 37.5%);
+    -webkit-mask: linear-gradient(to bottom, transparent 0%, black 12.5%, black 25%, transparent 37.5%);
+}
+.gradient-blur-bottom > div:nth-of-type(1) {
+    mask: linear-gradient(to bottom, transparent 12.5%, black 25%, black 37.5%, transparent 50%);
+    -webkit-mask: linear-gradient(to bottom, transparent 12.5%, black 25%, black 37.5%, transparent 50%);
+}
+.gradient-blur-bottom > div:nth-of-type(2) {
+    mask: linear-gradient(to bottom, transparent 25%, black 37.5%, black 50%, transparent 62.5%);
+    -webkit-mask: linear-gradient(to bottom, transparent 25%, black 37.5%, black 50%, transparent 62.5%);
+}
+.gradient-blur-bottom > div:nth-of-type(3) {
+    mask: linear-gradient(to bottom, transparent 37.5%, black 50%, black 62.5%, transparent 75%);
+    -webkit-mask: linear-gradient(to bottom, transparent 37.5%, black 50%, black 62.5%, transparent 75%);
+}
+.gradient-blur-bottom > div:nth-of-type(4) {
+    mask: linear-gradient(to bottom, transparent 50%, black 62.5%, black 75%, transparent 87.5%);
+    -webkit-mask: linear-gradient(to bottom, transparent 50%, black 62.5%, black 75%, transparent 87.5%);
+}
+.gradient-blur-bottom > div:nth-of-type(5) {
+    mask: linear-gradient(to bottom, transparent 62.5%, black 75%, black 87.5%, transparent 100%);
+    -webkit-mask: linear-gradient(to bottom, transparent 62.5%, black 75%, black 87.5%, transparent 100%);
+}
+.gradient-blur-bottom > div:nth-of-type(6) {
+    mask: linear-gradient(to bottom, transparent 75%, black 87.5%, black 100%);
+    -webkit-mask: linear-gradient(to bottom, transparent 75%, black 87.5%, black 100%);
+}
+.gradient-blur-bottom::after {
+    mask: linear-gradient(to bottom, transparent 87.5%, black 100%);
+    -webkit-mask: linear-gradient(to bottom, transparent 87.5%, black 100%);
+}
+
+/* --- Masks for Top Blur (reversed gradient) --- */
+.gradient-blur-top::before {
+    mask: linear-gradient(to top, transparent 0%, black 12.5%, black 25%, transparent 37.5%);
+    -webkit-mask: linear-gradient(to top, transparent 0%, black 12.5%, black 25%, transparent 37.5%);
+}
+.gradient-blur-top > div:nth-of-type(1) {
+    mask: linear-gradient(to top, transparent 12.5%, black 25%, black 37.5%, transparent 50%);
+    -webkit-mask: linear-gradient(to top, transparent 12.5%, black 25%, black 37.5%, transparent 50%);
+}
+.gradient-blur-top > div:nth-of-type(2) {
+    mask: linear-gradient(to top, transparent 25%, black 37.5%, black 50%, transparent 62.5%);
+    -webkit-mask: linear-gradient(to top, transparent 25%, black 37.5%, black 50%, transparent 62.5%);
+}
+.gradient-blur-top > div:nth-of-type(3) {
+    mask: linear-gradient(to top, transparent 37.5%, black 50%, black 62.5%, transparent 75%);
+    -webkit-mask: linear-gradient(to top, transparent 37.5%, black 50%, black 62.5%, transparent 75%);
+}
+.gradient-blur-top > div:nth-of-type(4) {
+    mask: linear-gradient(to top, transparent 50%, black 62.5%, black 75%, transparent 87.5%);
+    -webkit-mask: linear-gradient(to top, transparent 50%, black 62.5%, black 75%, transparent 87.5%);
+}
+.gradient-blur-top > div:nth-of-type(5) {
+    mask: linear-gradient(to top, transparent 62.5%, black 75%, black 87.5%, transparent 100%);
+    -webkit-mask: linear-gradient(to top, transparent 62.5%, black 75%, black 87.5%, transparent 100%);
+}
+.gradient-blur-top > div:nth-of-type(6) {
+    mask: linear-gradient(to top, transparent 75%, black 87.5%, black 100%);
+    -webkit-mask: linear-gradient(to top, transparent 75%, black 87.5%, black 100%);
+}
+.gradient-blur-top::after {
+    mask: linear-gradient(to top, transparent 87.5%, black 100%);
+    -webkit-mask: linear-gradient(to top, transparent 87.5%, black 100%);
 }

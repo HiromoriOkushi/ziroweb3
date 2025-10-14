@@ -80,13 +80,15 @@
         <div id="sparkle-effect-container"></div>
     </div>
 
-    <div id="top-blur"></div>
-    <div id="bottom-blur"></div>
-
     <!-- Main Page Content -->
     <div id="page-content">
-        <main class="pt-24 md:pt-32">
 
+        <!-- MOVED: CSS Gradient Blur Elements are now INSIDE page-content -->
+        <div class="gradient-blur gradient-blur-top">
+            <div></div> <div></div> <div></div> <div></div> <div></div> <div></div>
+        </div>
+
+        <main class="pt-24 md:pt-32">
             <!-- Hero Section -->
             <section id="hero" class="py-20 md:py-32 text-center">
                 <div class="container mx-auto px-6">
@@ -358,34 +360,17 @@
                 <p class="text-sm">© 2025 Ziro</p>
             </div>
         </footer>
+
+        <!-- MOVED: Bottom blur is also inside, at the end -->
+        <div class="gradient-blur gradient-blur-bottom">
+            <div></div> <div></div> <div></div> <div></div> <div></div> <div></div>
+        </div>
+
     </div> <!-- End Page Content Wrapper -->
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script type="module" src="script.js"></script>
-    <script type="module">
-        import GradualBlur from './gradual_blur.js';
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            new GradualBlur('#top-blur', {
-                target: 'page',
-                position: 'top',
-                strength: 5,
-                height: '7rem',
-                divCount: 7,
-                curve: 'ease-in',
-                zIndex: 40
-            });
-            new GradualBlur('#bottom-blur', {
-                target: 'page',
-                position: 'bottom',
-                strength: 3,
-                height: '6rem',
-                divCount: 10,
-                curve: 'ease-in',
-                zIndex: 40
-            });
-        });
-    </script>
+
 </body>
 </html>
