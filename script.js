@@ -67,32 +67,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scrollValue < fadeOutDistance) {
             const opacity = 1 - (scrollValue / fadeOutDistance);
             imageHero.style.opacity = Math.max(0, opacity).toFixed(2);
-            imageHero.style.pointerEvents = 'auto';
         } else {
             imageHero.style.opacity = '0';
-            imageHero.style.pointerEvents = 'none';
         }
     };
     
-    // --- UNIFIED NAVBAR LOGIC ---
+    // --- EDITED: Simplified Navbar Logic ---
+    const allSections = [
+        document.getElementById('image-hero'), document.getElementById('hero'), document.getElementById('problem'),
+        document.getElementById('why'), document.getElementById('what'), document.getElementById('how'),
+        document.getElementById('use-cases'), document.getElementById('tech'), document.getElementById('roadmap'),
+        document.getElementById('join')
+    ].filter(Boolean);
+
+    // Get all navigation elements
+    const mobileCTA = document.getElementById('mobile-cta');
+    const mobileLogo = document.getElementById('mobile-logo'); // EDITED: Get the new mobile logo
     const navbar = document.getElementById('navbar');
     const navLinks = document.querySelectorAll('.navbar-link');
     const navLamp = document.getElementById('navbar-lamp');
-    const navbarLogo = document.getElementById('navbar-logo'); // Get the logo element
-
-    // Create a single, ordered array of all sections.
-    const allSections = [
-        document.getElementById('image-hero'),
-        document.getElementById('hero'),
-        document.getElementById('problem'),
-        document.getElementById('why'),
-        document.getElementById('what'),
-        document.getElementById('how'),
-        document.getElementById('use-cases'),
-        document.getElementById('tech'),
-        document.getElementById('roadmap'),
-        document.getElementById('join')
-    ].filter(Boolean);
+    const navbarLogo = document.getElementById('navbar-logo');
 
     const updateLampPosition = (activeLink) => {
         if (!activeLink || !navLamp) return;
@@ -103,10 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
         navLamp.style.transform = `translateX(${offsetX}px)`;
     };
 
-    // The single function to manage the navbar's entire state.
     const updateNavbarState = () => {
         const triggerPoint = window.innerHeight * 0.3;
         let latestActiveIndex = -1;
+        const isDesktop = window.innerWidth >= 768;
 
         allSections.forEach((section, index) => {
             const rect = section.getBoundingClientRect();
@@ -115,42 +109,51 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // NEW: Logic for fading the navbar logo in/out based on the index
-        if (latestActiveIndex >= 1) {
-            // We are past the main image hero (index 0), so show the logo.
-            navbarLogo.classList.add('logo-visible');
-        } else {
-            // We are on the main image hero, so hide the logo.
-            navbarLogo.classList.remove('logo-visible');
-        }
+        const shouldBeVisible = latestActiveIndex >= 1;
 
-        // Apply master rules for suppression and highlighting
-        if (latestActiveIndex < 2) {
-            // We are in a hero section (index 0 or 1). Suppress the navbar.
-            navbar.classList.add('nav-suppressed');
-            navLinks.forEach(link => link.classList.remove('active'));
-        } else {
-            // We are in a content section. Activate the navbar.
-            navbar.classList.remove('nav-suppressed');
-            const activeSection = allSections[latestActiveIndex];
-            if (!activeSection) return;
+        if (isDesktop) {
+            // --- Desktop-Only Logic ---
+            if (navbarLogo) navbarLogo.classList.toggle('logo-visible', shouldBeVisible);
+            
+            if (navbar) {
+                const shouldSuppressLamp = latestActiveIndex < 2;
+                navbar.classList.toggle('nav-suppressed', shouldSuppressLamp);
 
-            navLinks.forEach(link => {
-                const targetId = link.getAttribute('href').substring(1);
-                const isActive = targetId === activeSection.id;
-                link.classList.toggle('active', isActive);
-                if (isActive) {
-                    updateLampPosition(link);
+                let activeLinkFound = false;
+                if (!shouldSuppressLamp) {
+                    const activeSection = allSections[latestActiveIndex];
+                    if (activeSection) {
+                        navLinks.forEach(link => {
+                            const targetId = link.getAttribute('href').substring(1);
+                            const isActive = targetId === activeSection.id;
+                            link.classList.toggle('active', isActive);
+                            if (isActive) {
+                                updateLampPosition(link);
+                                activeLinkFound = true;
+                            }
+                        });
+                    }
                 }
-            });
+                if (!activeLinkFound) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                }
+            }
+        } else {
+            // --- Mobile-Only Logic ---
+            if (mobileCTA) {
+                mobileCTA.classList.toggle('visible', shouldBeVisible);
+            }
+            // EDITED: Add visibility logic for the new mobile logo
+            if (mobileLogo) {
+                mobileLogo.classList.toggle('visible', shouldBeVisible);
+            }
         }
     };
 
-    // --- SIMPLIFIED SCROLL HANDLER ---
     const handleScroll = (scrollValue) => {
         if (sparkleContainer) sparkleContainer.style.maskPosition = `0px ${scrollValue * 0.3}px`;
         handleHeroFade(scrollValue);
-        updateNavbarState(); // Call our single, unified function
+        updateNavbarState();
     };
 
     if (lenis) {
@@ -159,9 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => handleScroll(window.scrollY));
     }
     
-    // Initial call on page load to set the correct starting state.
     handleScroll(window.scrollY);
 
+    // Desktop link smooth scrolling
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -170,10 +173,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Desktop CTA smooth scrolling
     document.querySelector('.navbar-cta-button').addEventListener('click', (e) => {
         e.preventDefault();
         if (lenis) lenis.scrollTo("#join");
     });
+
+    // Mobile CTA smooth scrolling
+    if (mobileCTA) {
+        mobileCTA.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (lenis) {
+                lenis.scrollTo("#join");
+            } else {
+                document.querySelector("#join").scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
     
     setTimeout(() => {
         const activeLink = document.querySelector('.navbar-link.active');
@@ -181,23 +197,17 @@ document.addEventListener('DOMContentLoaded', () => {
             updateLampPosition(activeLink);
         }
     }, 200);
-    // --- END OF NAVBAR LOGIC ---
 
     const waitlistForm = document.getElementById('waitlist-form');
     if (waitlistForm) {
-        // --- START: NEW AND FINAL WAITLIST FORM LOGIC ---
         waitlistForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Prevent the default form submission
-
+            e.preventDefault();
             const emailInput = document.getElementById('email-input');
             const messageEl = document.getElementById('form-message');
             const submitButton = waitlistForm.querySelector('button[type="submit"]');
             const email = emailInput.value;
-
-            // --- Paste your NEW Web App URL here ---
             const scriptURL = 'https://script.google.com/macros/s/AKfycbxgloVT_8j0-d7xq2xTpu4XIkiBRzuIaRFaNZVIhUhB5I-KdFkYifDhHSpUZTyxRLIjCQ/exec'; 
 
-            // Basic email validation
             if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
                 messageEl.textContent = 'Please enter a valid email address.';
                 messageEl.className = 'text-red-400 mt-4 h-6';
@@ -205,30 +215,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Disable the button and show a submitting message
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
             messageEl.textContent = '';
-
-            // Create a FormData object to send the data
             const formData = new FormData();
-            // The key 'Email' MUST match the header in your Google Sheet
             formData.append('Email', email);
 
-            // Send the data using fetch
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'cors',
-                body: formData // We are now sending FormData, not JSON
-            })
+            fetch(scriptURL, { method: 'POST', mode: 'cors', body: formData })
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
                     messageEl.textContent = 'Thank you! You have been added to the waitlist.';
                     messageEl.className = 'text-green-400 mt-4 h-6';
-                    emailInput.value = ''; // Clear the input field
+                    emailInput.value = '';
                 } else {
-                    // Pass the error from the backend if it exists
                     throw new Error(data.error ? JSON.stringify(data.error) : 'An unknown error occurred.');
                 }
             })
@@ -238,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageEl.className = 'text-red-400 mt-4 h-6';
             })
             .finally(() => {
-                // Re-enable the button and clear the message after a delay
                 setTimeout(() => {
                     submitButton.disabled = false;
                     submitButton.textContent = 'Join Waitlist';
@@ -246,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 5000);
             });
         });
-        // --- END: NEW AND FINAL WAITLIST FORM LOGIC ---
     }
 
     document.querySelectorAll('.scroll-reveal').forEach(element => {

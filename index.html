@@ -6,7 +6,7 @@
     <title>Ziro | Your documents are dead. We're making them alive.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display.swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -14,28 +14,35 @@
 </head>
 <body class="bg-background text-text-primary antialiased">
 
-    <!-- NEW: Fullscreen Image Hero -->
-    <div id="image-hero" class="fixed top-0 left-0 w-full h-screen z-[100] bg-background flex items-center justify-center">
-        <!-- Make sure you have an image named 'ziro-logo.png' in your project folder -->
+    <!-- z-index is correct at z-10 -->
+    <div id="image-hero" class="fixed top-0 left-0 w-full h-screen z-10 bg-background flex items-center justify-center">
         <img src="ziro-logo.png" alt="Ziro Logo" class="w-3/4 max-w-4xl">
     </div>
 
-    <!-- NEW: Top-Left Corner Logo -->
-    <a href="#" id="navbar-logo">
+    <!-- EDITED: Mobile-Only CTA Button (Stays) -->
+    <a href="#join" id="mobile-cta" class="block md:hidden">
+        Join
+    </a>
+
+    <!-- EDITED: NEW Mobile-Only Top-Left Logo -->
+    <a href="#" id="mobile-logo" class="block md:hidden">
         <img src="ziro-fill.png" alt="Ziro Logo">
     </a>
 
-    <!-- EDITED: New Navigation Bar (Now using fixed z-50 without positioning classes) -->
-    <nav id="navbar" class="fixed z-50">
+    <!-- EDITED: Desktop-Only Top-Left Logo -->
+    <a href="#" id="navbar-logo" class="hidden md:block">
+        <img src="ziro-fill.png" alt="Ziro Logo">
+    </a>
+
+    <!-- EDITED: Desktop-Only Navigation Bar -->
+    <nav id="navbar" class="hidden md:flex fixed z-50">
         <div class="navbar-inner flex items-center gap-2 bg-background/5 border border-border backdrop-blur-lg p-1 rounded-full shadow-lg">
 
-            <!-- The animated "lamp" that slides between active items -->
             <div id="navbar-lamp">
                 <div class="lamp-glow-top"></div>
             </div>
 
-            <!-- START: This new container wraps the links we want to hide -->
-            <div class="navbar-links-container hidden md:flex items-center gap-2">
+            <div class="navbar-links-container flex items-center gap-2">
                 <a href="#problem" class="navbar-link">
                     <span class="nav-icon"><span data-lucide="alert-triangle"></span></span>
                     <span class="nav-text">Problem</span>
@@ -65,7 +72,6 @@
                     <span class="nav-text">Roadmap</span>
                 </a>
             </div>
-            <!-- END: Wrapper -->
 
             <a href="#join" class="navbar-cta-button text-sm font-semibold px-4 py-2 rounded-full">
                 Join

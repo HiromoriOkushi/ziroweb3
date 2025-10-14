@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display.swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
     --background: #050505;
@@ -107,6 +107,7 @@ body {
 
 #image-hero {
     will-change: opacity;
+    pointer-events: none;
 }
 
 #page-content footer {
@@ -120,12 +121,59 @@ body {
     margin-top: 100vh;
 }
 
-/* --- NAVIGATION BAR STYLES --- */
-#navbar {
+/* --- EDITED: Mobile CTA Button Styles --- */
+#mobile-cta {
     position: fixed;
+    top: 1.25rem;
+    right: 1.5rem; /* MOVED to the right */
+    z-index: 60;
+    background-color: var(--accent);
+    color: var(--background);
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.4s ease-in-out, transform 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#mobile-cta.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#mobile-cta:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+/* --- NEW: Mobile-Only Top-Left Logo Styles --- */
+#mobile-logo {
+    position: fixed;
+    top: 1.25rem;
+    left: 1.5rem;
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+}
+
+#mobile-logo img {
+    height: 2.25rem; /* Smaller logo for mobile */
+}
+
+#mobile-logo.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+/* --- NAVIGATION BAR STYLES (Desktop Only) --- */
+#navbar {
     top: 1.5rem;
     right: 1.5rem;
-    z-index: 50;
 }
 
 .navbar-inner {
@@ -136,33 +184,32 @@ body {
     -webkit-backdrop-filter: blur(12px);
 }
 
-/* --- NEW: Top-Left Corner Logo Styling --- */
+/* --- Top-Left Corner Logo Styling (Desktop Only) --- */
 #navbar-logo {
     position: fixed;
     top: 1.25rem;
     left: 1.5rem;
-    z-index: 60; /* Place it above the navbar */
+    z-index: 60;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s ease-in-out;
 }
 
 #navbar-logo img {
-    height: 3rem; /* 32px, a good size for the corner */
+    height: 3rem;
 }
 
 #navbar-logo.logo-visible {
     opacity: 1;
     pointer-events: auto;
 }
-/* --- END: Top-Left Corner Logo Styling --- */
 
 .navbar-link {
     position: relative;
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 600;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 9999px;
     color: var(--text-secondary);
     transition: color 0.3s ease;
@@ -173,12 +220,10 @@ body {
     color: var(--accent);
 }
 
-/* The link is highlighted when active */
 .navbar-link.active {
     color: var(--accent);
 }
 
-/* BUT, if the nav is suppressed, force the active link's color back to the default */
 #navbar.nav-suppressed .navbar-link.active {
     color: var(--text-secondary);
 }
@@ -204,7 +249,6 @@ body {
     transition: transform 0.4s cubic-bezier(0.45, 0, 0.15, 1), width 0.4s cubic-bezier(0.45, 0, 0.15, 1), opacity 0.3s ease;
 }
 
-/* If the nav is suppressed, hide the lamp completely */
 #navbar.nav-suppressed #navbar-lamp {
     opacity: 0;
 }
@@ -242,35 +286,13 @@ body {
     left: 0;
 }
 
-/* --- Mobile-First Navigation Styles --- */
-/* By default (mobile), hide the lamp and text labels, and show icons */
-#navbar-lamp,
 .nav-text {
+    display: block;
+}
+.nav-icon {
     display: none;
 }
 
-.nav-icon {
-    display: block;
-}
-.nav-icon svg { width: 1.125rem; height: 1.125rem; stroke-width: 2.5px; }
-
-
-/* --- Desktop Overrides --- */
-/* On screens 768px and wider, show the lamp and swap icons for text */
-@media (min-width: 768px) {
-    #navbar-lamp {
-        display: block;
-    }
-    .nav-text {
-        display: block;
-    }
-    .nav-icon {
-        display: none;
-    }
-    .navbar-link {
-        padding: 0.5rem 1rem;
-    }
-}
 
 .gradient-text {
     background: linear-gradient(90deg, var(--accent) 30%, var(--text-primary) 70%);
@@ -291,7 +313,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* --- STATIC FROSTED GLASS CARD STYLE --- */
 .card {
     position: relative;
     background-color: hsla(0, 0%, 100%, 0.1);
@@ -366,21 +387,9 @@ body {
   height: 1px;
 }
 
-/* --- EDITED: Mobile-Specific Navbar Visibility --- */
-@media (max-width: 767px) {
-    #navbar {
-        transition: opacity 0.4s ease-in-out;
-    }
-
-    #navbar.nav-suppressed {
-        opacity: 0;
-        pointer-events: none;
-    }
-}
-
-/* --- NEW: CSS GRADIENT BLUR --- */
+/* --- CSS GRADIENT BLUR --- */
 .gradient-blur {
-    position: fixed; /* REVERTED back to fixed */
+    position: fixed;
     z-index: 40;
     pointer-events: none;
     left: 0;
@@ -388,11 +397,11 @@ body {
 }
 .gradient-blur.gradient-blur-bottom {
     bottom: 0;
-    height: 12rem; /* EDITED: Set specific height */
+    height: 12rem;
 }
 .gradient-blur.gradient-blur-top {
     top: 0;
-    height: 10rem; /* EDITED: Set specific height */
+    height: 10rem;
 }
 
 .gradient-blur > div,
